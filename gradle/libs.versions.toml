@@ -1,0 +1,57 @@
+[versions]
+agp = "9.2.1"
+minSdk = "24"
+compileSdk = "37"
+
+# sdk
+coreVersion = "1.13.1"
+
+# demo
+android-lifecycle = "2.8.7"
+activityCompose = "1.9.2"
+lifecycleRuntimeKtx = "2.11.0"
+composeBom = "2026.02.01"
+appCompatDemo = "1.7.0"
+kotlin = "2.0.21"
+kotlinx-serialization = "1.7.3"
+
+# test
+junit = "4.13.2"
+junitVersion = "4.13.2"
+androidxJunit = "1.3.0"
+espressoCore = "3.7.0"
+material = "1.14.0"
+
+[libraries]
+
+# sdk
+coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreVersion" }
+
+# demo
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-material = { group = "androidx.compose.material3", name = "material3" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core-android" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "android-lifecycle" }
+appCompatDemo = { module = "androidx.appcompat:appcompat", version.ref = "appCompatDemo" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# test
+kotlinJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+

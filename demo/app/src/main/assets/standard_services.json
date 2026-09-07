@@ -1,0 +1,59 @@
+{
+  "name": "Standard Services",
+  "initializers": [
+    {
+      "name": "Analytics",
+      "blockingTimeMs": 500,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Database",
+      "blockingTimeMs": 1200,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Network Client",
+      "blockingTimeMs": 800,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Crash Reporter",
+      "blockingTimeMs": 300,
+      "runOnMainThread": true,
+      "dependencies": []
+    },
+    {
+      "name": "User Session",
+      "blockingTimeMs": 600,
+      "runOnMainThread": false,
+      "dependencies": ["Database", "Network Client"]
+    },
+    {
+      "name": "Feature Toggles",
+      "blockingTimeMs": 400,
+      "runOnMainThread": false,
+      "dependencies": ["Network Client"]
+    },
+    {
+      "name": "UI Theme",
+      "blockingTimeMs": 200,
+      "runOnMainThread": true,
+      "dependencies": ["User Session"]
+    },
+    {
+      "name": "Location Provider",
+      "blockingTimeMs": 700,
+      "runOnMainThread": false,
+      "dependencies": ["Network Client"]
+    },
+    {
+      "name": "Image Loader",
+      "blockingTimeMs": 900,
+      "runOnMainThread": false,
+      "dependencies": ["Network Client", "User Session"]
+    }
+  ]
+}
