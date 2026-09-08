@@ -26,9 +26,9 @@ internal class MethodPatchingController private constructor(
             visitLdcInsn(Type.getObjectType(typeRefName))
             visitMethodInsn(
                 INVOKESTATIC,
-                "ru/ozon/android/componentInitiazlizer/AppComponentInitializerUtilsKt",
+                "ru/ozon/asyncInitializer/library/AppComponentInitializerUtilsKt",
                 "getComponentInitializer",
-                "(Ljava/lang/Class;)Lru/ozon/android/componentInitiazlizer/ComponentInitializer;",
+                "(Ljava/lang/Class;)Lru/ozon/asyncInitializer/library/ComponentInitializer;",
                 false
             )
             visitTypeInsn(

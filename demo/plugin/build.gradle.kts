@@ -1,5 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("ru.ozon.gradle.plugin.asyncInitializer-injector")
+}
+
+injectInitializerComponents {
+    create("debug") {
+        configs = listOf(layout.projectDirectory.file("demoComponentInitializerConfig.config"))
+        isTransformResultEnabled = true
+    }
 }
 
 android {
@@ -21,5 +29,6 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":library"))
+    implementation(libs.appCompatDemo)
 }

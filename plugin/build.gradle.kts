@@ -1,7 +1,5 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import java.util.Properties
 import kotlin.apply
-import kotlin.collections.getValue
 
 plugins {
     `kotlin-dsl`
@@ -17,6 +15,12 @@ kotlin {
     jvmToolchain(17)
     explicitApi()
 }
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 
 tasks.test {
     useJUnitPlatform()
@@ -48,7 +52,6 @@ dependencies {
     testImplementation(libs.asm)
     testImplementation(libs.asm.tree)
     testImplementation(libs.asm.commons)
-    // PatchingControllerTest компилируется против AGP-типа ClassData
     testImplementation(libs.androidPlugin)
 
     // AGP и Kotlin-плагин уходят в TestKit-сборку через plugin classpath (compileOnly не попадает)
@@ -65,7 +68,7 @@ gradlePlugin {
             displayName = "AsyncInitializer Injector"
             description = ""
             tags = listOf("android")
-            implementationClass = " ru.ozon.asyncInitializers.plugin.InjectInitializerPlugin"
+            implementationClass = "ru.ozon.asyncInitializers.plugin.InjectInitializerPlugin"
         }
     }
 }
