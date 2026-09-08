@@ -3,6 +3,7 @@ package ru.ozon.asyncInitializer
 import ru.ozon.asyncInitializer.base.BaseInitializersTest
 import ru.ozon.asyncInitializer.library.ComponentInitializer
 import ru.ozon.asyncInitializer.library.exceptions.CycleComponentInitializerException
+import ru.ozon.asyncInitializer.library.exceptions.MainSwitchComponentInitializerException
 import ru.ozon.asyncInitializer.library.getComponentInitializer
 import ru.ozon.asyncInitializer.util.ListInitializeComponentInitializerFactory
 import ru.ozon.asyncInitializer.util.SingleInitializeComponentInitializerFactory

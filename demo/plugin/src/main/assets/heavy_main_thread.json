@@ -1,0 +1,35 @@
+{
+  "name": "Heavy Main Thread",
+  "initializers": [
+    {
+      "name": "UI Core",
+      "blockingTimeMs": 200,
+      "runOnMainThread": true,
+      "dependencies": []
+    },
+    {
+      "name": "UI Navigation",
+      "blockingTimeMs": 400,
+      "runOnMainThread": true,
+      "dependencies": ["UI Core"]
+    },
+    {
+      "name": "UI Theme",
+      "blockingTimeMs": 300,
+      "runOnMainThread": true,
+      "dependencies": ["UI Core"]
+    },
+    {
+      "name": "UI Animations",
+      "blockingTimeMs": 500,
+      "runOnMainThread": true,
+      "dependencies": ["UI Theme"]
+    },
+    {
+      "name": "Background Sync",
+      "blockingTimeMs": 800,
+      "runOnMainThread": false,
+      "dependencies": []
+    }
+  ]
+}

@@ -26,3 +26,4 @@ dependencyResolutionManagement {
 rootProject.name = "AsyncInitializers"
 include(":demo:app")
 include(":library")
+includeBuild("plugin")

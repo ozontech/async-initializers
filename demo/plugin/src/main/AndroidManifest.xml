@@ -10,11 +10,7 @@
         android:theme="@style/Theme.AsyncInitializers">
 
         <activity
-            android:name=".presentation.RunActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity
-            android:name=".presentation.MainActivity"
+            android:name="ru.ozon.asyncInitializer.app.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>

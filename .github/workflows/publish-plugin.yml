@@ -1,0 +1,51 @@
+name: Publish Android Library to Maven Central
+
+on:
+  push:
+    tags:
+      - 'plugin-*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Validate version matches versions.properties
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#library-}"
+          EXPECTED_VERSION=$(grep '^versionName=' library/versions.properties | sed 's/^versionName=//')
+          if [ "$TAG_VERSION" != "$EXPECTED_VERSION" ]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match versions.properties ($EXPECTED_VERSION)"
+            exit 1
+          fi
+          echo "Version validated: $EXPECTED_VERSION"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Publish
+        run: ./gradlew publishPlugins
+        env:
+          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+
+      - name: Build release AARs
+        run: ./gradlew :library:assembleRelease --no-configuration-cache
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            library/build/outputs/aar/library-release.aar
