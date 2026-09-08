@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation(project(":library"))
+//    implementation("ru.ozon:asyncInitializers:1.0.0")
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.foundation)

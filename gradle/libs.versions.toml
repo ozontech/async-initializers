@@ -1,5 +1,6 @@
 [versions]
 agp = "9.2.1"
+vanniktech-publish = "0.37.0"
 minSdk = "24"
 compileSdk = "37"
 
@@ -53,5 +54,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-publish" }
 
 
