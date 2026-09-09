@@ -3,7 +3,7 @@ agp = "9.2.1"
 vanniktech-publish = "0.37.0"
 gradle-publish = "1.2.1"
 minSdk = "24"
-compileSdk = "37"
+compileSdk = "36"
 
 # sdk
 coreVersion = "1.13.1"
