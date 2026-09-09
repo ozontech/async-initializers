@@ -13,7 +13,7 @@ import ru.ozon.asyncInitializers.plugin.internal.util.LamdaPattern
 /**
  * Parser for a config line
  *
- * Example: "ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)"
+ * Example: "ignore fun configure(ru.ozon.example.api.AppConfig, ru.ozon.example.api.AppDependencies)"
  */
 internal class IgnoreMothodsParser: LineParser<MethodImage>() {
     private val LINE_PARSE_REGEX = Regex("^\\s*ignore\\s+fun\\s+([\\w_]+)\\(([^)]*)\\)(?::\\s?(.*))?$")

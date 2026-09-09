@@ -152,7 +152,7 @@ inject ru.ozon.example.InitializerA toPublicMethods ru.ozon.example.ComponentA {
 
 ```text
 inject ru.ozon.example.InitializerB toPublicMethods ru.ozon.example.ComponentB {
-    ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)
+    ignore fun configure(ru.ozon.example.api.AppConfig, ru.ozon.example.api.AppDependencies)
     ignore fun build(ru.ozon.example.Args): ru.ozon.example.Result
     ignore fun load(): ru.ozon.example.Config
 }

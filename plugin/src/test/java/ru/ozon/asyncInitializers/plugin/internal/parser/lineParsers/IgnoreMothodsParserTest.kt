@@ -21,13 +21,13 @@ internal class IgnoreMothodsParserTest {
 
     @Test
     fun `parsing a method with object parameters and void`() {
-        val image = parse("ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)")
+        val image = parse("ignore fun configure(ru.ozon.example.api.AppConfig, ru.ozon.example.api.AppDependencies)")
 
         assertEquals("configure", image.name)
         assertEquals(
             listOf(
-                TypeImage.Object("ru.ozon.limb.api.LimbConfig"),
-                TypeImage.Object("ru.ozon.limb.api.LimbDependencies"),
+                TypeImage.Object("ru.ozon.example.api.AppConfig"),
+                TypeImage.Object("ru.ozon.example.api.AppDependencies"),
             ),
             image.orderedParameters
         )

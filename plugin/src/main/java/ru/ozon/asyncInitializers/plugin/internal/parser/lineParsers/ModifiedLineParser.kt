@@ -13,7 +13,7 @@ import ru.ozon.asyncInitializers.plugin.internal.util.findCurrentLineOrException
 /**
  * Parser for a config line
  *
- * Example: "inject ru.ozon.hire.initializer.LimbInitializer toPublicMethods ru.ozon.limb.api.LimbAppApi {"
+ * Example: "inject ru.ozon.example.initializer.AppInitializer toPublicMethods ru.ozon.example.api.AppApi {"
  */
 internal class ModifiedLineParser: LineParser<ModifiedImage>() {
     private val LINE_PARSE_REGEX = Regex("^inject\\s+($classPath)\\s+to[pP]ublic[mM]ethods\\s+($classPath)\\s*(\\{)?\\s*$")
