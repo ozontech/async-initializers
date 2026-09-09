@@ -4,10 +4,10 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "master" ]
 
 jobs:
-  library-test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
@@ -22,6 +22,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run all checks
-        run: ./gradlew check
+      - name: Run library checks
+        run: ./gradlew :library:check
+
+      - name: Run library checks
+        run: ./gradlew :plugin:check
 

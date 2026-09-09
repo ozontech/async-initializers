@@ -11,6 +11,9 @@ val uploadInfo = Properties().apply {
     file("versions.properties").inputStream().use { load(it) }
 }
 
+group = uploadInfo.getProperty("groupId")
+version = uploadInfo.getProperty("versionName")
+
 kotlin {
     jvmToolchain(17)
     explicitApi()
@@ -63,10 +66,10 @@ gradlePlugin {
     website.set("https://github.com/ozontech/async-initializers")
     vcsUrl.set("https://github.com/ozontech/async-initializers")
     plugins {
-        create("component-initializer-injector") {
+        create("asyncInitializers-injector") {
             id = uploadInfo.getProperty("pluginId")
             displayName = "AsyncInitializer Injector"
-            description = ""
+            description = "Gradle plugin that injects AsyncInitializer calls into public methods of declared classes at build time."
             tags = listOf("android")
             implementationClass = "ru.ozon.asyncInitializers.plugin.InjectInitializerPlugin"
         }

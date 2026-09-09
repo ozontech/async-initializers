@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    id("ru.ozon.gradle.plugin.asyncInitializer-injector")
+    id("ru.ozon.asyncInitializer-injector")
 }
 
 injectInitializerComponents {

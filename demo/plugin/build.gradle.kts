@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("ru.ozon.gradle.plugin.asyncInitializer-injector")
+    id("ru.ozon.asyncInitializer-injector")
 }
 
 injectInitializerComponents {

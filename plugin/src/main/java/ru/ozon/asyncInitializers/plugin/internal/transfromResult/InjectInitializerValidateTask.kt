@@ -5,9 +5,12 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
@@ -26,15 +29,19 @@ import java.util.jar.JarOutputStream
  *
  * В текущей реализации берет jar всех библиотек и classes из текущего проекта
  */
+@CacheableTask
 internal abstract class InjectInitializerValidateTask : DefaultTask() {
 
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val configs: ListProperty<RegularFile>
 
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val allJars: ListProperty<RegularFile>
 
     @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val allDirectories: ListProperty<Directory>
 
     @get:OutputFile

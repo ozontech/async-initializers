@@ -1,133 +1,16 @@
-# async-initializers
+# AsyncInitializers
 
-## 📋 Содержание
-- [ℹ️ Описание](#ℹ-описание)
-- [🔌️ Подключение](#-подключение)
-- [🛠️ Настройка и инициализация](#-настройка-и-инициализация)
-- [🚀 Использование](#-использование)
-- [📞 Контакты](#-контакты)
+Репозиторий с решениями для безопасной и ускоренной инициализации зависимостей в Android-приложениях:
+рантайм-библиотека с фреймворком инициализации и Gradle-плагин для её бесшовной интеграции.
 
-## ℹ️ Описание
+## 📦 Компоненты
 
-`AsyncInitializer` — библиотека для безопасной и потокобезопасной инициализации компонентов приложения. Предоставляет фреймворк для управления зависимостями при инициализации с гарантиями:
+| Компонент | Назначение |
+| --- | --- |
+| [`library/`](library/README.md) | Рантайм-библиотека `AsyncInitializer` — потокобезопасная инициализация компонентов, детектирование циклических зависимостей, поддержка MainThread и защита от дедлоков. |
+| [`plugin/`](plugin/README.md) | Gradle-плагин `Component Initializer Injector` — патчинг байткода: автоматически встраивает вызовы инициалайзеров в публичные методы классов на этапе сборки. |
 
-- **Thread-safe инициализация** — двойная проверка блокировки (Double-Check Locking) гарантирует однократный вызов инициализации компонента независимо от количества потоков
-- **Детектирование циклических зависимостей** — автоматическое обнаружение циклов вида A → B → A на основе thread-local стека вызовов
-- **Поддержка MainThread** — возможность принудительного выполнения инициализации на главном потоке с автоматическим переключением из любого потока
-- **Защита от дедлоков** — оптимизированная синхронизация для MainThread, предотвращающая взаимную блокировку потоков
+## 🔗 Документация
 
-Библиотека для ускорения старта Android приложений через API для асинхронной инициализации зависимостей  Поставляется с Gradle плагином, значительно упрощающим интеграцию в Android проекты и позволяющим инициализировать графы зависимостей без ручного управления порядком инициализации.
-
-## 🔌️ Подключение
-
-##### libs.toml
-```toml
-[versions]
-componentInitiazlizer = "1.0.0"
-
-[libraries]
-ozon-componentInitiazlizer = Тут вставить либу
-```
-##### build.gradle.kts
-```kts
-dependencies {
-    implementation(libs.ozon.componentInitiazlizer)
-}
-```
-
-## 🛠️ Настройка и инициализация
-
-Перед использованием необходимо однократно настроить `AppComponentInitializerProvider` в точке входа приложения:
-
-```kotlin
-// Создаём фабрику компонентов (реализует AppComponentInitializerFactory)
-class MyComponentsFactory : AppComponentInitializerFactory {
-    override fun <T : ComponentInitializer> create(initializer: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        return when (initializer) {
-            AnalyticsInitializer::class.java -> AnalyticsInitializer()
-            DatabaseInitializer::class.java -> DatabaseInitializer()
-            // ...
-            else -> error("Unknown initializer: ${initializer.simpleName}")
-        } as T
-    }
-}
-
-// Настраиваем провайдер (вызывается один раз при старте приложения)
-setupAppComponentInitializer(
-    factory = MyComponentsFactory(),
-)
-```
-
-По умолчанию используется `DefaultComponentInitializerStore` (in-memory кэш) и `DefaultPlatformMainThread` (на основе `Handler(Looper.getMainLooper())`). При необходимости их можно переопределить:
-
-```kotlin
-setupAppComponentInitializer(
-    factory = MyComponentsFactory(),
-    store = MyCustomStore(),
-    platformMainThread = MyPlatformMainThread(),
-)
-```
-
-## 🚀 Использование
-
-### Создание инициализатора компонента
-
-```kotlin
-class AnalyticsInitializer : ComponentInitializer() {
-
-    override fun runInitialize() {
-        // Тяжёлая инициализация компонента
-    }
-}
-```
-
-### Выполнение на MainThread
-
-```kotlin
-class UiComponentsInitializer : ComponentInitializer(runOnlyOnMainThread = true) {
-
-    override fun runInitialize() {
-        // Выполняется на MainThread
-    }
-}
-```
-
-### Управление зависимостями
-
-Зависимости разрешаются вручную внутри `runInitialize()` через `getComponentInitializer<T>()`:
-
-```kotlin
-class AnalyticsInitializer : ComponentInitializer() {
-
-    override fun runInitialize() {
-        // Явное разрешение зависимостей
-        getComponentInitializer<DatabaseInitializer>().initialize()
-        getComponentInitializer<NetworkInitializer>().initialize()
-    }
-}
-```
-
-### Запуск инициализации и получение компонента
-
-```kotlin
-// Получение инициализатора по типу (reified)
-val analyticsInitializer = getComponentInitializer<AnalyticsInitializer>()
-
-// Запуск инициализации (с гарантией однократного вызова)
-analyticsInitializer.initialize()
-```
-
-При первом обращении к `getComponentInitializer` фабрика создаёт экземпляр, который кэшируется в `ComponentInitializerStore`. При повторном запросе возвращается закэшированный экземпляр.
-
-### Расширение возможностей при использовании component-initializer
-
-Component-initializer имеет дополнительное решение для вставки вызовов вида
-
-```kotlin
-getComponentInitializer<NetworkInitializer>().initialize()
-```
-
-в места, которые не подконтрольны разработчику (например, внутри библиотек).
-
-Для ознакомления и подключения используйте специальный плагин [Component-initializer-injector](https://gitlab.ozon.ru/mobileapps/mobile-gradle-plugins).
+- [📚 Рантайм-библиотека `library/README.md`](library/README.md)
+- [💉 Gradle-плагин `plugin/README.md`](plugin/README.md)

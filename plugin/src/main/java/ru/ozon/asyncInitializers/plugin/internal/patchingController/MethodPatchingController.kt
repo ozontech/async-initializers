@@ -8,7 +8,7 @@ import org.objectweb.asm.Type
 import ru.ozon.asyncInitializers.plugin.internal.util.InitializerTypeImage
 
 /**
- * Модификтор метода встраивает [ru.ozon.gradle.componentInitializer.util.ComponentInitializer] в код
+ * Модификтор метода встраивает [ru.ozon.asyncInitializers.plugin.internal.util.ComponentInitializer] в код
  */
 internal class MethodPatchingController private constructor(
     private val initializerTypeImages: List<InitializerTypeImage>,
