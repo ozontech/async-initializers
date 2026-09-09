@@ -1,10 +1,10 @@
-name: Publish Android Library to Maven Central
+name: Common Pull Request Workflow
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ main ]
 
 jobs:
   test:
