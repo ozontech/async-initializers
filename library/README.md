@@ -138,3 +138,6 @@ getComponentInitializer<NetworkInitializer>().initialize()
 в места, которые не подконтрольны разработчику (например, внутри библиотек).
 
 Для ознакомления и подключения используйте специальный плагин [asyncInitializer-injector](../plugin/README.md).
+
+## Лицензия
+Библиотека AsyncInitializers распространяется по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находится в свободном доступе на GitHub.

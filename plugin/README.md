@@ -174,3 +174,7 @@ inject ru.ozon.example.componentInitializers.InitializerC toPublicMethods ru.ozo
 
 > **Важно:** сигнатура `ignore`-метода должна совпасть с реальной сигнатурой метода
 > в классе-жертве, иначе сборка упадёт на этапе валидации.
+
+#### Лицензия
+
+AsyncInitializers Injector Plugin распространяется по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находится в свободном доступе на GitHub. Дистрибутив AsyncInitializers Injector Plugin включает в себя библиотеку ASM, выпущенную под [лицензией 3-Clause BSD](https://asm.ow2.io/license.html).

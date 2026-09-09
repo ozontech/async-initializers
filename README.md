@@ -14,3 +14,7 @@
 
 - [📚 Рантайм-библиотека `library/README.md`](library/README.md)
 - [💉 Gradle-плагин `plugin/README.md`](plugin/README.md)
+
+## Лицензия
+
+Библиотека AsyncInitializers и плагин AsyncInitializers Injector Plugin распространяются по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находятся в свободном доступе на GitHub. Дистрибутив AsyncInitializers Injector Plugin включает в себя библиотеку ASM, выпущенную под [лицензией 3-Clause BSD](https://asm.ow2.io/license.html).
