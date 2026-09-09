@@ -47,6 +47,9 @@ jobs:
       - name: Build release AARs
         run: ./gradlew :library:assembleRelease --no-configuration-cache
 
+      - name: Build demo app release APK
+        run: ./gradlew :demo:app:assembleRelease --no-configuration-cache
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -55,3 +58,4 @@ jobs:
           generate_release_notes: true
           files: |
             library/build/outputs/aar/library-release.aar
+            demo/app/build/outputs/apk/release/app-release.apk
