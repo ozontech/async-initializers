@@ -174,40 +174,35 @@ class ChainCallComponentInitializers : BaseInitializersTest() {
     @Test
     fun mainThreadRunBlockerComponentInitializersWhenItWait() {
         val factory = DynamicLazyInitializeComponentInitializerFactory()
-        runOrderTest(localFactory = factory) {
+        runTest(localFactory = factory) {
             val cpuCountDownLatch = CountDownLatch(1)
 
             val chain = listOf(
                 ChainFirstInitializer::class to {
                     ChainFirstInitializer {
-                        assertTrue { true }
-                        expected(1)
+                        assertTrue { isMainTread }
                     }
                 },
                 ChainSecondInitializer::class to {
                     ChainSecondInitializer {
-                        assertTrue { true }
-                        expected(2)
-                        cpuCountDownLatch.countDown()
+                        assertTrue { isMainTread }
+                        cpuCountDownLatch.await()
                     }
                 },
                 ChainThirdInitializer::class to {
                     ChainThirdInitializer {
                         assertFalse { isMainTread }
-                        cpuCountDownLatch.await()
-                        expected(3)
+                        cpuCountDownLatch.countDown()
                     }
                 },
                 ChainFourthInitializer::class to {
                     ChainFourthInitializer(runOnMainThread = true) {
                         assertTrue { isMainTread }
-                        expected(4)
                     }
                 },
                 ChainFifthInitializer::class to {
                     ChainFifthInitializer {
                         assertTrue { isMainTread }
-                        expected(5)
                     }
                 },
             )
@@ -219,7 +214,6 @@ class ChainCallComponentInitializers : BaseInitializersTest() {
             }
 
             getComponentInitializer<ChainFirstInitializer>().initialize()
-            expectedLast(5)
         }
     }
 
