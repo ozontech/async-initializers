@@ -1,5 +1,5 @@
 package ru.ozon.asyncInitializer.library.exceptions
 
 public class AlreadyOnMainThreadException internal constructor() : Exception(
-    "Вы уже находитесь на UI потоке",
+    "You are already on the UI thread",
 )

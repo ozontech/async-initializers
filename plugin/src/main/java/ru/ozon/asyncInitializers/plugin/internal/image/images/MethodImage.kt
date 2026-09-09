@@ -4,11 +4,11 @@ import ru.ozon.asyncInitializers.plugin.internal.image.Image
 
 
 /**
- * Образ метода используемого в JVM
+ * Representation of a method used in the JVM
  *
- * @param name имя метода
- * @param orderedParameters параметры метода
- * @param returnType возвращаемый тип
+ * @param name method name
+ * @param orderedParameters method parameters
+ * @param returnType return type
  */
 internal data class MethodImage(
     val name: String,

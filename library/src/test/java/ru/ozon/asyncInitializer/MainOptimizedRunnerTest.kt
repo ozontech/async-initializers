@@ -16,7 +16,7 @@ class MainOptimizedRunnerTest {
 
     @Test
     fun optimizedSynchronizedThrowsWhenNotOnMain() {
-        // isMainThread == false (текущий поток != заявленный main)
+        // isMainThread == false (current thread != declared main)
         val platform = DefaultTestPlatformMainThread(currentThreadId = Long.MAX_VALUE)
         val runner = MainOptimizedRunner(platform)
         val lock = ReentrantLock()
@@ -51,7 +51,7 @@ class MainOptimizedRunnerTest {
         val actionRan = AtomicBoolean(false)
         val workerAcquired = CountDownLatch(1)
 
-        // Worker удерживает lock, затем отдаёт его и будит main через runOnUIThread + forceWakeUp
+        // Worker holds the lock, then releases it and wakes main via runOnUIThread + forceWakeUp
         val worker = thread {
             lock.lock()
             workerAcquired.countDown()
@@ -63,7 +63,7 @@ class MainOptimizedRunnerTest {
         }
 
         workerAcquired.await()
-        // "Main" (тестовый поток) заблокирован на tryLock/await, пока lock держит worker
+        // "Main" (test thread) is blocked on tryLock/await while the worker holds the lock
         runner.optimizedSynchronized(lock) {
             actionRan.set(true)
         }

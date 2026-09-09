@@ -49,7 +49,7 @@ class ProviderSetupTest : BaseInitializersTest() {
         setupAppComponentInitializer(factory = EmptyAppComponentInitializerFactory)
         forceResetAppComponentInitializer()
 
-        // Повторный setup после reset не должен бросать AlreadyInitializerAppComponentInitializerException
+        // Repeated setup after reset should not throw AlreadyInitializerAppComponentInitializerException
         setupAppComponentInitializer(factory = EmptyAppComponentInitializerFactory)
 
         clearAppComponentInitializer()

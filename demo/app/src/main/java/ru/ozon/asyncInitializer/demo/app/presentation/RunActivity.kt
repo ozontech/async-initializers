@@ -138,7 +138,7 @@ private fun RunContent(
     ) {
         // Sync column
         TestColumn(
-            title = "Синхронный запуск",
+            title = "Synchronous run",
             tests = state.syncTests,
             medianMs = state.syncMedianMs,
             modifier = Modifier
@@ -151,7 +151,7 @@ private fun RunContent(
 
         // Async column
         TestColumn(
-            title = "Асинхронный запуск",
+            title = "Asynchronous run",
             tests = state.asyncTests,
             medianMs = state.asyncMedianMs,
             modifier = Modifier
@@ -195,9 +195,9 @@ private fun TestColumn(
         // Median time
         Text(
             text = if (medianMs != null) {
-                "Медианное: ${medianMs}ms"
+                "Median: ${medianMs}ms"
             } else {
-                "Медианное: —"
+                "Median: —"
             },
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
@@ -224,7 +224,7 @@ private fun TestRow(index: Int, test: TestRun) {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
-            text = "Тест ${index + 1}",
+            text = "Test ${index + 1}",
             style = MaterialTheme.typography.bodySmall,
         )
 
@@ -239,7 +239,7 @@ private fun TestRow(index: Int, test: TestRun) {
                     )
                     Spacer(modifier = Modifier.size(4.dp))
                     Text(
-                        text = "Ожидание",
+                        text = "Waiting",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
                         fontSize = 11.sp,
@@ -252,7 +252,7 @@ private fun TestRow(index: Int, test: TestRun) {
                     )
                     Spacer(modifier = Modifier.size(4.dp))
                     Text(
-                        text = "Выполнение",
+                        text = "Executing",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 11.sp,

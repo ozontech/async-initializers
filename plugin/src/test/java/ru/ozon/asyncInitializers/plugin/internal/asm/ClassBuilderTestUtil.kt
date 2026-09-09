@@ -10,7 +10,7 @@ internal class MethodSpec(
 )
 
 /**
- * Сборка простого class-файла в памяти для тестов ASM-визиторов (без компиляции исходников).
+ * Builds a simple class file in memory for testing ASM visitors (without compiling sources).
  */
 internal object ClassBuilderTestUtil {
 

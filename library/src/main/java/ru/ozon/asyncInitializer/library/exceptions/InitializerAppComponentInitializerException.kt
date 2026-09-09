@@ -1,19 +1,19 @@
 package ru.ozon.asyncInitializer.library.exceptions
 
 /**
- * Не был инициализирован [ru.ozon.asyncInitializer.library.provider.AppComponentInitializerProvider]
+ * [ru.ozon.asyncInitializer.library.provider.AppComponentInitializerProvider] was not initialized
  *
- * Возможно, вы не вызвали [ru.ozon.asyncInitializer.library.setupAppComponentInitializer]
+ * You probably did not call [setupAppComponentInitializer]
  */
 public class NotInitializerAppComponentInitializerException internal constructor() : Exception(
-    "Ошибка обращения (смотреть в классе ошибки)",
+    "Access error (see the exception class)",
 )
 
 /**
- * Повторная инициализация [ru.ozon.asyncInitializer.library.provider.AppComponentInitializerProvider]
+ * [ru.ozon.asyncInitializer.library.provider.AppComponentInitializerProvider] was initialized again
  *
- * Возможно, вы повторно вызвали [ru.ozon.asyncInitializer.library.setupAppComponentInitializer]
+ * You probably called [setupAppComponentInitializer] again
  */
 public class AlreadyInitializerAppComponentInitializerException internal constructor() : Exception(
-    "Повторная инициализация (смотреть в классе ошибки)",
+    "Repeated initialization (see the exception class)",
 )

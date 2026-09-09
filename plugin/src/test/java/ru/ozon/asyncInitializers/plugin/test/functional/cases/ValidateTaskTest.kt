@@ -11,8 +11,8 @@ import java.io.File
 import kotlin.test.assertTrue
 
 /**
- * Тесты задачи validate (isTransformResultEnabled = true), которая вызывается после патчинга
- * и проверяет, что все заявленные в конфиге классы были найдены и пропатчены.
+ * Tests of the validate task (isTransformResultEnabled = true), invoked after patching
+ * verifying that all classes declared in the config were found and patched.
  */
 internal class ValidateTaskTest : BaseGradleProjectTest() {
 
@@ -21,17 +21,17 @@ internal class ValidateTaskTest : BaseGradleProjectTest() {
     private val validateTaskPath = ":app:validateInitializersInjectDebug"
 
     @Test
-    fun `validate задача успешно проходит после корректного патчинга`() {
+    fun `validate task passes successfully after correct patching`() {
         val result = gradleRunner.runWithLog(":app:assembleDebug")
 
         assertTrue(
             resultHasTaskWithOutcome(result, validateTaskPath, TaskOutcome.SUCCESS),
-            "После корректного патчинга $validateTaskPath должна выполниться успешно"
+            "After correct patching, $validateTaskPath should complete successfully"
         )
     }
 
     @Test
-    fun `validate задача падает если класс-жертва из конфига не найден`() {
+    fun `validate task fails if the victim class from the config is not found`() {
         setConfigContent(
             "inject ru.ozon.test.InitializerA toPublicMethods ru.ozon.test.MissingComponent"
         )
@@ -40,16 +40,16 @@ internal class ValidateTaskTest : BaseGradleProjectTest() {
 
         assertTrue(
             resultHasTaskWithOutcome(result, validateTaskPath, TaskOutcome.FAILED),
-            "Задача $validateTaskPath должна упасть, если жертва не найдена"
+            "Task $validateTaskPath should fail if the victim is not found"
         )
         assertTrue(
-            result.output.contains("не был модифицирован", ignoreCase = true),
-            "В выводе должно быть сообщение о ненайденном классе-жертве"
+            result.output.contains("was not modified", ignoreCase = true),
+            "Output should contain a message about an unfound victim class"
         )
     }
 
     @Test
-    fun `validate задача падает если инициалайзер из конфига не найден`() {
+    fun `validate task fails if the initializer from the config is not found`() {
         setConfigContent(
             "inject ru.ozon.test.MissingInitializer toPublicMethods ru.ozon.test.ComponentA"
         )
@@ -58,16 +58,16 @@ internal class ValidateTaskTest : BaseGradleProjectTest() {
 
         assertTrue(
             resultHasTaskWithOutcome(result, validateTaskPath, TaskOutcome.FAILED),
-            "Задача $validateTaskPath должна упасть, если инициалайзер не найден"
+            "Task $validateTaskPath should fail if the initializer is not found"
         )
         assertTrue(
-            result.output.contains("не был найден", ignoreCase = true),
-            "В выводе должно быть сообщение о ненайденном инициалайзере"
+            result.output.contains("was not found", ignoreCase = true),
+            "Output should contain a message about an unfound initializer"
         )
     }
 
     @Test
-    fun `validate задача падает если в ignore указан несуществующий метод`() {
+    fun `validate task fails if ignore references a non-existent method`() {
         setConfigContent(
             """
                 inject ru.ozon.test.InitializerA toPublicMethods ru.ozon.test.ComponentA {
@@ -80,16 +80,16 @@ internal class ValidateTaskTest : BaseGradleProjectTest() {
 
         assertTrue(
             resultHasTaskWithOutcome(result, validateTaskPath, TaskOutcome.FAILED),
-            "Задача $validateTaskPath должна упасть, если в ignore указан несуществующий метод"
+            "Task $validateTaskPath should fail if ignore references a non-existent method"
         )
         assertTrue(
-            result.output.contains("найти метод", ignoreCase = true),
-            "В выводе должно быть сообщение о ненайденном ignore-методе"
+            result.output.contains("find method", ignoreCase = true),
+            "Output should contain a message about an unfound ignore-method"
         )
     }
 
     @Test
-    fun `ignore исключает указанный метод из патчинга`() {
+    fun `ignore excludes the specified method from patching`() {
         setConfigContent(
             """
                 inject ru.ozon.test.InitializerA toPublicMethods ru.ozon.test.ComponentA {
@@ -102,21 +102,21 @@ internal class ValidateTaskTest : BaseGradleProjectTest() {
 
         assertTrue(
             resultHasTaskWithOutcome(result, validateTaskPath, TaskOutcome.SUCCESS),
-            "Конфиг с корректным ignore должен успешно пройти валидацию"
+            "Config with a correct ignore should pass validation successfully"
         )
 
         val methodsWithInjection = patchedMethodsWithInjection()
         assertTrue(
             methodsWithInjection["get"] == false,
-            "Метод get() подпадает под ignore и не должен содержать вызов инициалайзера"
+            "Method get() falls under ignore and should not contain an initializer call"
         )
         assertTrue(
             methodsWithInjection["initialize"] == true,
-            "Метод initialize() не подпадает под ignore и должен быть пропатчен"
+            "Method initialize() does not fall under ignore and should be patched"
         )
     }
 
-    /** Метод -> содержит ли он встроенный вызов getComponentInitializer */
+    /** Method -> whether it contains an embedded getComponentInitializer call */
     private fun patchedMethodsWithInjection(): Map<String, Boolean> {
         val methods = mutableMapOf<String, Boolean>()
         val reader = ClassReader(patchedComponentFile.readBytes())

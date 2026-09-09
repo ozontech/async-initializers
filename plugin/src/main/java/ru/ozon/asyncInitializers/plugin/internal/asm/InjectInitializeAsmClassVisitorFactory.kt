@@ -11,7 +11,7 @@ import ru.ozon.asyncInitializers.plugin.internal.util.isComponentInitializer
 import java.util.WeakHashMap
 
 /**
- * Механизм для патчинга кода, использующий ASM механизмы и поддерживаемый Gradle из коробки
+ * Code-patching mechanism using ASM and supported by Gradle out of the box
  */
 internal abstract class InjectInitializeAsmClassVisitorFactory: AsmClassVisitorFactory<InjectInstrumentationParameters> {
 
@@ -25,7 +25,7 @@ internal abstract class InjectInitializeAsmClassVisitorFactory: AsmClassVisitorF
         }
 
     /**
-     * При успешной проверке [isInstrumentable] начинается патчинг класса
+     * Once [isInstrumentable] passes, class patching begins
      */
     override fun createClassVisitor(
         classContext: ClassContext,
@@ -42,7 +42,7 @@ internal abstract class InjectInitializeAsmClassVisitorFactory: AsmClassVisitorF
     }
 
     /**
-     * Проверка, нужно ли патчить данный класс
+     * Checks whether this class needs patching
      */
     override fun isInstrumentable(classData: ClassData): Boolean {
         return (!classData.isComponentInitializer() && programPatchingController.shouldPatch(classData))

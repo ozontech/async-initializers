@@ -7,37 +7,37 @@ import java.io.File
 import kotlin.test.assertTrue
 
 /**
- * Тесты корректности настройки плагина: подключение расширения и сопоставление buildType.
+ * Tests of plugin setup correctness: extension wiring and buildType matching.
  */
 internal class ConfigSetupTest : BaseGradleProjectTest() {
 
     override val templateDir: File = File("src/test/templates/android-app")
 
     @Test
-    fun `при корректной настройке создаётся и выполняется validate задача`() {
+    fun `validate task is created and executed with correct setup`() {
         val result = gradleRunner.runWithLog(":app:assembleDebug")
 
         assertTrue(
             result.tasks.any { it.path.contains("ClassesWithAsm") && it.outcome == TaskOutcome.SUCCESS },
-            "Задача инструментирования transform<Variant>ClassesWithAsm должна выполниться успешно"
+            "The instrumentation task transform<Variant>ClassesWithAsm should complete successfully"
         )
         assertTrue(
             resultHasTaskWithOutcome(result, ":app:validateInitializersInjectDebug", TaskOutcome.SUCCESS),
-            "Конфигурация корректна, но задача :app:validateInitializersInjectDebug не выполнилась успешно"
+            "Configuration is correct, but the :app:validateInitializersInjectDebug task was not successful"
         )
     }
 
     @Test
-    fun `плагин не применяется к контейнеру с несовпадающим buildType`() {
+    fun `plugin is not applied to a container with a mismatched buildType`() {
         val result = gradleRunner.runWithLog(":app:assembleRelease")
 
         assertTrue(
             result.tasks.none { it.path.contains("ClassesWithAsm") && it.outcome == TaskOutcome.SUCCESS },
-            "При отключённом плагине не должно быть задачи инструментирования ClassesWithAsm"
+            "With the plugin disabled there should be no ClassesWithAsm instrumentation task"
         )
         assertTrue(
             result.tasks.none { it.path.contains("validateInitializersInject", ignoreCase = true) },
-            "Для дебаг-варианта не должно быть validate задачи, т.к. конфиг задан только для release"
+            "There should be no validate task for the debug variant, since config is set only for release"
         )
     }
 }

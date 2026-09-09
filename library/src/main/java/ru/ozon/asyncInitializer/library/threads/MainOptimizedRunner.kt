@@ -5,12 +5,12 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
 /**
- * Наследник [PlatformMainThread], который берет на себя ответственность за оптимизацию
- * при выполнении инициалайзеров на MainThread
+ * Subclass of [PlatformMainThread] responsible for optimization
+ * when running initializers on the MainThread
  *
- * Данный класс позволяет решить проблему DeadLock, когда n-ый поток ожидает выполнения [runOnUIThread] блока, и в то же время MainThread,
- * проводя инициализацию, не может обратиться к экземпляру [ru.ozon.asyncInitializer.library.ComponentInitializer],
- * поскольку тот занят n-ым потоком
+ * This class solves the DeadLock problem when the n-th thread waits for a [runOnUIThread] block, while the MainThread,
+ * doing its own initialization, cannot access a [ru.ozon.asyncInitializer.library.ComponentInitializer] instance,
+ * because it is held by the n-th thread
  */
 internal class MainOptimizedRunner(
     private val platformMainThread: PlatformMainThread,
@@ -36,8 +36,8 @@ internal class MainOptimizedRunner(
     }
 
     /**
-     * Оптимизированная синхронизация для MainThread имеет механизм, помогающий избавиться от DeadLock
-     * для MainThread
+     * Optimized synchronization for MainThread has a mechanism that helps avoid DeadLock
+     * for the MainThread
      */
     fun <R> optimizedSynchronized(lock: ReentrantLock, action: () -> R): R {
         if (!isMainThread) throw NotOnMainThreadException()

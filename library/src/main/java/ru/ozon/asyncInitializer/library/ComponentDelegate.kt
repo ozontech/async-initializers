@@ -9,7 +9,7 @@ internal fun <T : Any> ComponentInitializer.lateSingleInitialize(): LateSingleIn
 }
 
 /**
- * Реализация делегата, гарантирующего отложенную однократную реализацию
+ * Delegate implementation guaranteeing deferred single initialization
  */
 internal class LateSingleInitialize<T : Any> : ReadWriteProperty<ComponentInitializer, T> {
     private var value: T? = null

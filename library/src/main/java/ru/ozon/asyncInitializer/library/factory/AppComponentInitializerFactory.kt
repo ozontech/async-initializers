@@ -3,7 +3,7 @@ package ru.ozon.asyncInitializer.library.factory
 import ru.ozon.asyncInitializer.library.ComponentInitializer
 
 /**
- * Фабрика для создания инициалайзеров
+ * Factory for creating initializers
  */
 public interface AppComponentInitializerFactory {
 

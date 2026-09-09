@@ -5,8 +5,8 @@ import ru.ozon.asyncInitializers.plugin.internal.image.images.ModifiedImage
 import ru.ozon.asyncInitializers.plugin.internal.util.containsVictimByName
 
 /**
- * Сущность, отвечающая за проверку класса на необходимость встраивания
- * [ru.ozon.gradle.componentInitializer.util.ComponentInitializer] в его методы
+ * Entity responsible for checking whether a class needs embedding
+ * [ComponentInitializer] into its methods
  */
 internal class ProgramPatchingController private constructor(
     val modifiedImages: List<ModifiedImage>,

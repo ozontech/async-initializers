@@ -4,9 +4,9 @@ import ru.ozon.asyncInitializers.plugin.internal.image.Image
 import ru.ozon.asyncInitializers.plugin.internal.util.ConfigReservedTypes
 
 /**
- * Образ классов, используемых в JVM
+ * Representation of classes used in the JVM
  *
- * Примитивы, обьекты, лямды (пока не поддерживается), массивы (пока не поддерживается)
+ * Primitives, objects, lambdas (not yet supported), arrays (not yet supported)
  */
 internal sealed interface TypeImage: Image {
     val jvmName: String
@@ -54,7 +54,7 @@ internal sealed interface TypeImage: Image {
 
         override fun toString(): String {
             val reservedName = ConfigReservedTypes.findSecondAssociated(this)
-            checkNotNull(reservedName) {  "Не зарезервированый примитив $this" }
+            checkNotNull(reservedName) {  "Unreserved primitive $this" }
 
             return reservedName
         }
@@ -65,8 +65,8 @@ internal sealed interface TypeImage: Image {
     ): TypeImage {
 
         init {
-            check(javaName.isNotBlank()) { "javaName не должен быть пустым" }
-            check(!javaName.contains(" ")) { "javaName содержит пробел \"$javaName\"" }
+            check(javaName.isNotBlank()) { "javaName must not be empty" }
+            check(!javaName.contains(" ")) { "javaName contains whitespace \"$javaName\"" }
         }
 
         override val jvmName: String = "L${javaName.replace(".","/")};"

@@ -9,8 +9,8 @@ import ru.ozon.asyncInitializer.library.store.ComponentInitializerStore
 private val initializerCreateIdLocal = ThreadLocal<String>()
 
 /**
- * Особенность апи создание [ComponentInitializer] осуществляется по классу который реализует данный класс
- * Для Demo приложения был развернут костыль с инициализацией по Id
+ * API peculiarity: a [ComponentInitializer] is created by the class that implements this class
+ * A workaround with Id-based initialization was set up for the Demo app
  */
 private fun runUseThreadLocal(id: String, action: () -> DemoInitializer): DemoInitializer {
     val previous = initializerCreateIdLocal.get()

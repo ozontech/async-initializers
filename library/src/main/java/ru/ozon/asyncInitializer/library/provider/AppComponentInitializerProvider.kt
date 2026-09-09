@@ -10,8 +10,8 @@ import ru.ozon.asyncInitializer.library.threads.PlatformMainThread
 import ru.ozon.asyncInitializer.library.store.DefaultComponentInitializerStore
 
 /**
- * Реализация данного класса должна являться точкой входа
- * для получения инициалайзера вместе со всеми его зависимостями
+ * An implementation of this class must be the entry point
+ * for obtaining an initializer together with all its dependencies
  */
 public interface AppComponentInitializerProvider {
 

@@ -14,7 +14,7 @@ private fun MethodInstance.methodImage() = createMethodImage()
 internal class MethodInstanceParserTest {
 
     @Test
-    fun `метод без параметров с void возвращает пустой список параметров`() {
+    fun `method without parameters with void returns an empty parameter list`() {
         val image = MethodInstance(ACC_PUBLIC, "run", "()V").methodImage()
 
         assertEquals("run", image.name)
@@ -23,7 +23,7 @@ internal class MethodInstanceParserTest {
     }
 
     @Test
-    fun `примитивные типы в параметрах распознаются`() {
+    fun `primitive parameter types are recognized`() {
         val image = MethodInstance(ACC_PUBLIC, "m", "(ZJ)V").methodImage()
 
         assertEquals(
@@ -34,7 +34,7 @@ internal class MethodInstanceParserTest {
     }
 
     @Test
-    fun `объектные типы распознаются по jvm дескриптору`() {
+    fun `object types are recognized by their jvm descriptor`() {
         val image = MethodInstance(ACC_PUBLIC, "m", "(Ljava/lang/String;)Lcom/foo/Bar;").methodImage()
 
         assertEquals(listOf(TypeImage.Object("java.lang.String")), image.orderedParameters)
@@ -42,23 +42,23 @@ internal class MethodInstanceParserTest {
     }
 
     @Test
-    fun `обёртка над примитивом сворачивается в примитивный тип`() {
+    fun `primitive wrapper is unwrapped into a primitive type`() {
         val image = MethodInstance(ACC_PUBLIC, "m", "()Ljava/lang/Integer;").methodImage()
 
         assertEquals(TypeImage.Primitive.INTEGER, image.returnType)
     }
 
-    // LAMDA_JVM_PATTERN в проде мёртвый: содержит ведущую 'L' и ';', а javaName их лишён,
-    // поэтому лямбда-дескриптор фактически парсится как обычный объект.
+    // LAMDA_JVM_PATTERN is dead in production: it contains a leading 'L' and ';' while javaName lacks them,
+    // so a lambda descriptor is actually parsed as a regular object.
     @Test
-    fun `лямбда-дескриптор парсится как обычный объект`() {
+    fun `lambda descriptor is parsed as a regular object`() {
         val image = MethodInstance(ACC_PUBLIC, "m", "(Lkotlin/jvm/functions/Function1;)V").methodImage()
 
         assertEquals(listOf(TypeImage.Object("kotlin.jvm.functions.Function1")), image.orderedParameters)
     }
 
     @Test
-    fun `массив примитивов распознаётся как тип-массив`() {
+    fun `primitive array is recognized as an array type`() {
         val image = MethodInstance(ACC_PUBLIC, "m", "([I)V").methodImage()
 
         assertEquals(listOf(TypeImage.Array(TypeImage.Primitive.INTEGER)), image.orderedParameters)
@@ -66,7 +66,7 @@ internal class MethodInstanceParserTest {
     }
 
     @Test
-    fun `некорректный символ в дескрипторе кидает исключение`() {
+    fun `invalid character in descriptor throws an exception`() {
         val exception = assertFailsWith<CannotParseDescriptorForMethodException> {
             MethodInstance(ACC_PUBLIC, "m", "(X)V").methodImage()
         }

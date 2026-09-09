@@ -5,8 +5,8 @@ import org.objectweb.asm.Opcodes.ASM9
 import org.objectweb.asm.Type
 
 /**
- * Тестовый MethodVisitor, записывающий интересующие нас инструкции,
- * позволяющий проверять байткод, эмитируемый модифицирующими визиторами.
+ * Test MethodVisitor that records the instructions of interest,
+ * allowing to verify bytecode emitted by modifying visitors.
  */
 internal class RecordingMethodVisitor : MethodVisitor(ASM9) {
 
@@ -14,19 +14,19 @@ internal class RecordingMethodVisitor : MethodVisitor(ASM9) {
     val checkcasts = mutableListOf<String>()
     val methodCalls = mutableListOf<String>()
 
-    /** Собирает типы из LDC-инструкций — обычно это загрузка класса инициалайзера через `Type`. */
+    /** Collects types from LDC instructions — usually loading the initializer class via `Type`. */
     override fun visitLdcInsn(value: Any?) {
         (value as? Type)?.let { ldcTypes.add(it) }
         super.visitLdcInsn(value)
     }
 
-    /** Собирает имена типов из type-инструкций (CHECKCAST, NEW, ANEWARRAY и т.п.) — например, каст к типу инициалайзера. */
+    /** Collects type names from type instructions (CHECKCAST, NEW, ANEWARRAY, etc.) — e.g. cast to the initializer type. */
     override fun visitTypeInsn(opcode: Int, type: String?) {
         type?.let { checkcasts.add(it) }
         super.visitTypeInsn(opcode, type)
     }
 
-    /** Собирает вызовы методов в виде `opcode owner name descriptor` — для проверки вызовов инициалайзеров. */
+    /** Collects method calls as `opcode owner name descriptor` — for verifying initializer calls. */
     override fun visitMethodInsn(
         opcode: Int,
         owner: String?,

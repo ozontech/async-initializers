@@ -1,10 +1,10 @@
 package ru.ozon.asyncInitializer.demo.plugin.presentation.componentInitializers
 
 /**
- * Примеры возможных компонентов которым необходим патчинг
+ * Examples of components that require patching
  *
- * После применения к ним плагина с конфигом component-initializer-injector с конфигурацией ./demoComponentInitializerConfig.config
- * Прилагается образец где в комментариями добавлены строки как будет выглядеть финальный файл
+ * After applying the plugin with the component-initializer-injector config ./demoComponentInitializerConfig.config
+ * A sample is included where lines showing the final file are added as comments
  */
 object ComponentA {
     @Volatile

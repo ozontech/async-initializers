@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.locks.ReentrantLock
 
 /**
- * Оптимизированная обретка для решения конфликтов между потоками
+ * Optimized wrapper for resolving conflicts between threads
  *
  */
 internal class ThreadController(
@@ -16,8 +16,8 @@ internal class ThreadController(
     val isMainThread get() = mainOptimizedRunner.isMainThread
 
     /**
-     * Функция, позволяющая из любого потока (кроме MainThread) отправить событие на MainThread
-     * Блокирует данный поток до тех пор, пока функция не отработает на MainThread
+     * Function that lets you send an event to the MainThread from any thread (except MainThread)
+     * Blocks the current thread until the function runs on the MainThread
      */
     fun dispatchOnMainWithBlocking(action: () -> Unit) {
         if (isMainThread) throw AlreadyOnMainThreadException()

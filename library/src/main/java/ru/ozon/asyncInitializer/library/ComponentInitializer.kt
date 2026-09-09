@@ -7,10 +7,10 @@ import java.util.UUID
 import java.util.concurrent.locks.ReentrantLock
 
 /**
- * Инициалайзер для конкретной фичи
+ * Initializer for a specific feature
  *
- * @param runOnlyOnMainThread гарантирует, что инициализация будет происходить только на MainThread
- * вне зависимости откуда тот был вызван [ru.ozon.hire.appcomponentinitializers.library.ComponentInitializer.initialize]
+ * @param runOnlyOnMainThread guarantees that initialization runs only on the MainThread
+ * regardless of where it was invoked from [ComponentInitializer.initialize]
  */
 public abstract class ComponentInitializer(
     public val runOnlyOnMainThread: Boolean = false,
@@ -42,11 +42,11 @@ public abstract class ComponentInitializer(
     protected abstract fun runInitialize()
 
     /**
-     * Простая инициализация
+     * Plain initialization
      *
-     * Гарантирует однократный вызов метода [runInitialize], используя механизм DoubleCheck
+     * Guarantees single invocation of [runInitialize] using Double-Check locking
      *
-     * Гарантирует обнаружение циклов -> (AInitializer -> BInitializer -> AInitializer)
+     * Guarantees cycle detection -> (AInitializer -> BInitializer -> AInitializer)
      */
     private fun defaultInitialize() {
         if (cycleCallDetector.isRepeatCall(this)) return
@@ -68,12 +68,12 @@ public abstract class ComponentInitializer(
     }
 
     /**
-     * Старт инициализации при запуске на MainThread или блокирующий диспатчинг на MainThread
+     * Starts initialization when running on MainThread, or performs a blocking dispatch to MainThread
      *
-     * Гарантирует перенос логики обнаружения циклов при вызове -> (AInitializer -> BInitializer -> AInitializer)
+     * Guarantees transferring the cycle detection logic when called -> (AInitializer -> BInitializer -> AInitializer)
      */
     private fun dispatchOnMainThreadInitialize() {
-        // Оптимистичный путь
+        // Optimistic path
         if (wasInitialized) return
 
         if (threadController.isMainThread) {

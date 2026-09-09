@@ -1,9 +1,9 @@
 package ru.ozon.asyncInitializer.library
 
 /**
- * !!! НЕ УДАЛЯТЬ
+ * !!! DO NOT REMOVE
  *
- * Аннотация используется как маркер при патчинге байт-кода над функциями, в которые был вставлен вызов [ComponentInitializer]
+ * Annotation used as a marker during bytecode patching on functions into which a [ComponentInitializer] call was inserted
  */
 @Suppress("unused")
 internal annotation class WasInjectInitializer

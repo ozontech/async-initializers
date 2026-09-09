@@ -36,7 +36,7 @@ class InitializerBehaviorTest : BaseInitializersTest() {
             createThread { getComponentInitializer<ComponentInitializer>().initialize() }
             awaitFinishAll()
 
-            // Повторный вызов с нового потока попадает в оптимистичную ветку `if (wasInitialized) return`
+            // A repeated call from a new thread hits the optimistic branch `if (wasInitialized) return`
             createThread { getComponentInitializer<ComponentInitializer>().initialize() }
             awaitFinishAll()
         }

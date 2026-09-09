@@ -30,7 +30,7 @@ internal class InjectInitializeClassVisitorTest {
         ),
     ) = ClassPatchingController.create(modifiedImages)
 
-    /** Применяет класс-визитор поверх class-файла и возвращает пары "метод -> аннотация". */
+    /** Applies the class visitor to a class file and returns "method -> annotation" pairs. */
     private fun patchedAnnotations(
         sourceBytes: ByteArray,
         classPatchingController: ClassPatchingController,
@@ -63,7 +63,7 @@ internal class InjectInitializeClassVisitorTest {
     }
 
     @Test
-    fun `попытка патчить интерфейс кидает исключение`() {
+    fun `attempting to patch an interface throws an exception`() {
         val sourceBytes = ClassBuilderTestUtil.buildClass(
             className = "com/foo/Victim",
             access = Opcodes.ACC_PUBLIC or Opcodes.ACC_INTERFACE,
@@ -78,7 +78,7 @@ internal class InjectInitializeClassVisitorTest {
     }
 
     @Test
-    fun `публичный метод помечается аннотацией-маркером`() {
+    fun `public method is marked with a marker annotation`() {
         val sourceBytes = ClassBuilderTestUtil.buildClass(
             "com/foo/Victim",
             methods = listOf(MethodSpec(Opcodes.ACC_PUBLIC, "foo", "()V")),
@@ -90,7 +90,7 @@ internal class InjectInitializeClassVisitorTest {
     }
 
     @Test
-    fun `непубличный метод не помечается`() {
+    fun `non-public method is not marked`() {
         val sourceBytes = ClassBuilderTestUtil.buildClass(
             "com/foo/Victim",
             methods = listOf(
@@ -106,7 +106,7 @@ internal class InjectInitializeClassVisitorTest {
     }
 
     @Test
-    fun `метод из списка ignore не помечается`() {
+    fun `method from the ignore list is not marked`() {
         val sourceBytes = ClassBuilderTestUtil.buildClass(
             "com/foo/Victim",
             methods = listOf(
@@ -125,7 +125,7 @@ internal class InjectInitializeClassVisitorTest {
     }
 
     @Test
-    fun `пустой контроллер не помечает методы`() {
+    fun `empty controller does not mark methods`() {
         val sourceBytes = ClassBuilderTestUtil.buildClass(
             "com/foo/Victim",
             methods = listOf(MethodSpec(Opcodes.ACC_PUBLIC, "foo", "()V")),

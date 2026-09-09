@@ -5,7 +5,7 @@ import org.objectweb.asm.Opcodes.ACC_PUBLIC
 private val constructorsName = setOf("<init>","<clinit>")
 
 /**
- * Представление метода в ASM
+ * Method representation in ASM
  */
 internal data class MethodInstance(
     private val access: Int,

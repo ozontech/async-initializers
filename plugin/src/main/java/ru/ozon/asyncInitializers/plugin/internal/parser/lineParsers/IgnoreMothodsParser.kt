@@ -11,9 +11,9 @@ import ru.ozon.asyncInitializers.plugin.internal.util.CommaSeparatorChar
 import ru.ozon.asyncInitializers.plugin.internal.util.LamdaPattern
 
 /**
- * Парсер для строки конфига
+ * Parser for a config line
  *
- * Пример: "ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)"
+ * Example: "ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)"
  */
 internal class IgnoreMothodsParser: LineParser<MethodImage>() {
     private val LINE_PARSE_REGEX = Regex("^\\s*ignore\\s+fun\\s+([\\w_]+)\\(([^)]*)\\)(?::\\s?(.*))?$")

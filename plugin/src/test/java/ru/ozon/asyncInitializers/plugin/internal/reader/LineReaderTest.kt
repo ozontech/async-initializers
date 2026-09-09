@@ -12,18 +12,18 @@ internal class LineReaderTest {
         LineReader(BufferedReader(StringReader(content)))
 
     @Test
-    fun `пустые и бланковые строки пропускаются при чтении`() {
-        val reader = readerFor("\n\n   \nпервая\n\n\nвторая\n")
+    fun `empty and blank lines are skipped when reading`() {
+        val reader = readerFor("\n\n   \nfirst\n\n\nsecond\n")
 
-        assertEquals("первая", reader.nextLine())
-        assertEquals("вторая", reader.nextLine())
+        assertEquals("first", reader.nextLine())
+        assertEquals("second", reader.nextLine())
     }
 
     @Test
-    fun `в конце потока currentLine и nextLine возвращают null`() {
-        val reader = readerFor("строка")
+    fun `currentLine and nextLine return null at the end of the stream`() {
+        val reader = readerFor("line")
 
-        assertEquals("строка", reader.currentLine)
+        assertEquals("line", reader.currentLine)
         assertNull(reader.nextLine())
         assertNull(reader.currentLine)
     }

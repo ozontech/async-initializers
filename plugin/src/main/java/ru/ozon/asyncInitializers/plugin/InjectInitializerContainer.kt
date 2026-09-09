@@ -12,14 +12,14 @@ public abstract class InjectInitializerContainer @Inject constructor(
 ) {
 
     /**
-     * Файл, содержащий список команд для плагина, используя которые будет происходить патчинг
+     * File containing a list of commands for the plugin used to perform patching
      */
     public val configs: ListProperty<RegularFile> = objects.listProperty(RegularFile::class.java)
 
     /**
-     * Проверка после патчинга, что все заявленные классы были найдены и пропатчены
+     * Verification after patching that all declared classes were found and patched
      *
-     * В текущей реализации является долгой процедурой
+     * In the current implementation this is a slow procedure
      */
     public val isTransformResultEnabled: Property<Boolean> = objects.property(Boolean::class.java)
         .convention(false)

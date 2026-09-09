@@ -8,9 +8,9 @@ internal fun File.lineReadFile(action: LineReader.() -> Unit) {
 }
 
 /**
- * Ридер потока, считывающий поток построчно
+ * Stream reader that reads the stream line by line
  *
- * Также способен пропускать пустые строки
+ * It can also skip empty lines
  */
 internal class LineReader(private val bufferedReader: BufferedReader) {
     var currentLine: String? = null

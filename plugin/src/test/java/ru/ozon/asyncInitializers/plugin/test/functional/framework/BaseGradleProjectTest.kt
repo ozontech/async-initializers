@@ -8,14 +8,14 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
 /**
- * Базовый класс для функциональных тестов плагина component-initializer-injector.
+ * Base class for functional tests of the component-initializer-injector plugin.
  *
- * Копирует [templateDir] (Android-приложение) во временную директорию, подключает
- * test.settings.gradle.kts и создаёт gradle.properties с включённым по умолчанию плагином.
+ * Copies [templateDir] (an Android application) into a temporary directory, includes
+ * test.settings.gradle.kts and creates gradle.properties with the plugin enabled by default.
  */
 internal abstract class BaseGradleProjectTest {
 
-    /** Путь к директории с шаблоном, например "src/test/templates/android-app" */
+    /** Path to the template directory, e.g. "src/test/templates/android-app" */
     abstract val templateDir: File
 
     @field:TempDir
@@ -74,7 +74,7 @@ internal abstract class BaseGradleProjectTest {
         return result
     }
 
-    // region Файлы шаблона, которые можно переопределять в тестах
+    // region Template files that can be overridden in tests
 
     protected fun configFile(): File = File(testProject, "app/inject.config")
 
@@ -84,14 +84,14 @@ internal abstract class BaseGradleProjectTest {
 
     // endregion
 
-    /** Пропатченный класс-жертва — результат задачи transform<Variant>ClassesWithAsm */
+    /** Patched victim class — result of the transform<Variant>ClassesWithAsm task */
     protected val patchedComponentFile: File
         get() = File(
             testProject,
             "app/build/intermediates/classes/debug/transformDebugClassesWithAsm/dirs/ru/ozon/test/ComponentA.class"
         )
 
-    // region Проверки результата
+    // region Result assertions
 
     protected fun resultHasTaskWithOutcome(result: BuildResult, path: String, outcome: TaskOutcome): Boolean {
         return result.tasks.any { it.path == path && it.outcome == outcome }

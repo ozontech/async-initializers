@@ -48,7 +48,7 @@ internal class InjectInitializeClassVisitor(
     private fun isInterface(access: Int) = (access and ACC_INTERFACE) != 0
 
     /**
-     * Пометка метода маркером (аннотацией @WasInjectInitializer), что метод был модифицирован
+     * Marks the method with a marker (annotation @WasInjectInitializer) indicating that it was modified
      */
     private fun MethodVisitor.markAsPatched() {
         visitAnnotation(WasInjectInitializerAnnotation.jvmName, true)?.visitEnd()

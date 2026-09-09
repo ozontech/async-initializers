@@ -27,7 +27,7 @@ internal class ConfigFileParserTest {
         ConfigFileParser.readModifiedTypes(files)
 
     @Test
-    fun `строка с блоком ignore парсится в образ с игнорируемыми методами`() {
+    fun `line with an ignore block is parsed into an image with ignored methods`() {
         val file = configFile(
             "c1.config",
             """
@@ -50,7 +50,7 @@ internal class ConfigFileParserTest {
     }
 
     @Test
-    fun `строка без блока имеет пустой набор игнорируемых методов`() {
+    fun `line without a block has an empty set of ignored methods`() {
         val file = configFile(
             "c2.config",
             "inject ru.ozon.init.MyInitializer toPublicMethods ru.ozon.victim.Victim"
@@ -63,7 +63,7 @@ internal class ConfigFileParserTest {
     }
 
     @Test
-    fun `неподдерживаемый синтаксис строки не парсится`() {
+    fun `unsupported line syntax is not parsed`() {
         val file = configFile(
             "c3.config",
             "inject ru.ozon.init.MyInitializer toPrivateMethods ru.ozon.victim.Victim"
@@ -73,12 +73,12 @@ internal class ConfigFileParserTest {
     }
 
     @Test
-    fun `некорректная строка внутри ignore-блока кидает исключение`() {
+    fun `invalid line inside an ignore block throws an exception`() {
         val file = configFile(
             "c4.config",
             """
                 inject ru.ozon.init.MyInitializer toPublicMethods ru.ozon.victim.Victim {
-                    какая-то белиберда
+                    some garbage
                 }
             """.trimIndent()
         )
@@ -87,7 +87,7 @@ internal class ConfigFileParserTest {
     }
 
     @Test
-    fun `пустые и бланковые строки пропускаются`() {
+    fun `empty and blank lines are skipped`() {
         val file = configFile(
             "c5.config",
             "\n\n   \ninject ru.ozon.init.MyInitializer toPublicMethods ru.ozon.victim.Victim\n\n\n"
@@ -99,7 +99,7 @@ internal class ConfigFileParserTest {
     }
 
     @Test
-    fun `несколько файлов конкатенируются в общий список образов`() {
+    fun `multiple files are concatenated into a common list of images`() {
         val first = configFile(
             "f1.config",
             "inject ru.ozon.init.A toPublicMethods ru.ozon.victim.V"

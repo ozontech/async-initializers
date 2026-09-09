@@ -26,7 +26,7 @@ class App: Application() {
                     InitializerA::class.java -> InitializerA()
                     InitializerB::class.java -> InitializerB()
                     InitializerC::class.java -> InitializerC()
-                    else -> error("Не поддерживаемый инициалазйер")
+                    else -> error("Unsupported initializer")
                 } as T
             }
         }

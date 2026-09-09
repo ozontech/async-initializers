@@ -7,44 +7,44 @@ import java.io.File
 import kotlin.test.assertTrue
 
 /**
- * Тесты применения патчинга байт-кода: в публичные методы класса-жертвы
- * встраивается вызов инициалайзера.
+ * Tests of bytecode patching: into the public methods of the victim class
+ * an initializer call is embedded.
  *
- * Патчинг выполняется задачей AGP-инструментирования `transform<Variant>ClassesWithAsm`,
- * которую плагин регистрирует через `variant.instrumentation.transformClassesWith(...)`.
- * Результат лежит в `app/build/intermediates/classes/<variant>/transform<Variant>ClassesWithAsm/dirs/...`.
+ * Patching is done by the AGP instrumentation task `transform<Variant>ClassesWithAsm`,
+ * which the plugin registers via `variant.instrumentation.transformClassesWith(...)`.
+ * The result is located in `app/build/intermediates/classes/<variant>/transform<Variant>ClassesWithAsm/dirs/...`.
  */
 internal class PatchingAppliedTest : BaseGradleProjectTest() {
 
     override val templateDir: File = File("src/test/templates/android-app")
 
     @Test
-    fun `патчинг применяется через задачу инструментирования ClassesWithAsm`() {
+    fun `patching is applied through the ClassesWithAsm instrumentation task`() {
         val result = gradleRunner.runWithLog(":app:assembleDebug")
 
         assertTrue(
             result.tasks.any { it.path.contains("ClassesWithAsm") && it.outcome == TaskOutcome.SUCCESS },
-            "Задача инструментирования transform<Variant>ClassesWithAsm должна выполниться успешно"
+            "The instrumentation task transform<Variant>ClassesWithAsm should complete successfully"
         )
     }
 
     @Test
-    fun `в байткод класса-жертвы встраивается вызов инициалайзера`() {
+    fun `an initializer call is embedded into the victim class bytecode`() {
         gradleRunner.runWithLog(":app:assembleDebug")
 
         assertTrue(
             patchedComponentFile.exists(),
-            "Пропатченный класс-жертва не найден по пути $patchedComponentFile"
+            "Patched victim class not found at path $patchedComponentFile"
         )
 
         patchedComponentFile.readText(Charsets.ISO_8859_1).let { bytes ->
             assertTrue(
                 bytes.contains("WasInjectInitializer"),
-                "В классе-жертве ${patchedComponentFile.name} должен присутствовать маркер WasInjectInitializer"
+                "Victim class ${patchedComponentFile.name} should contain the WasInjectInitializer marker"
             )
             assertTrue(
                 bytes.contains("getComponentInitializer"),
-                "В классе-жертве ${patchedComponentFile.name} должен присутствовать вызов getComponentInitializer"
+                "Victim class ${patchedComponentFile.name} should contain a getComponentInitializer call"
             )
         }
     }

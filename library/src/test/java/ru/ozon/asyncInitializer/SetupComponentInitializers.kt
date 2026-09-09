@@ -74,7 +74,7 @@ class SetupComponentInitializers : BaseInitializersTest() {
     @Test
     fun errorInitializeComponentInitializer() {
         val simpleComponentInitializer = FuncComponentInitializer {
-            error("Недостижимая точка")
+            error("Unreachable point")
         }
         var expectedThrowable: Throwable? = null
 

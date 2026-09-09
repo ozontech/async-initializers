@@ -5,6 +5,6 @@ import ru.ozon.asyncInitializers.plugin.internal.image.images.TypeImage
 internal val ComponentInitializer = "ru.ozon.asyncInitializer.library.ComponentInitializer"
 
 /**
- * Аннотация-маркер, что метод был модифицирован
+ * Marker annotation indicating that a method was modified
  */
 internal val WasInjectInitializerAnnotation = TypeImage.Object("ru.ozon.asyncInitializer.library.WasInjectInitializer")

@@ -29,9 +29,9 @@ tasks.test {
     useJUnitPlatform()
 }
 
-// AGP и Kotlin-плагин объявлены compileOnly и не попадают в TestKit-сборку.
-// Инжектируем их в plugin classpath плагина, чтобы в тестовом Android-проекте
-// резолвились применения com.android.application и kotlin-android.
+// AGP and the Kotlin plugin are declared compileOnly and do not end up in the TestKit build.
+// We inject them into the plugin classpath so that in the test Android project
+// applications of com.android.application and kotlin-android resolve.
 val fixtureClasspath: Configuration by configurations.creating
 
 tasks.withType<PluginUnderTestMetadata> {
@@ -57,7 +57,7 @@ dependencies {
     testImplementation(libs.asm.commons)
     testImplementation(libs.androidPlugin)
 
-    // AGP и Kotlin-плагин уходят в TestKit-сборку через plugin classpath (compileOnly не попадает)
+    // AGP and the Kotlin plugin go into the TestKit build via the plugin classpath (compileOnly is not included)
     "fixtureClasspath"(libs.androidPlugin)
     "fixtureClasspath"(libs.kotlinPlugin)
 }

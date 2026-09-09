@@ -1,8 +1,8 @@
 package ru.ozon.asyncInitializer.library.cycleCallDetector
 
 /**
- * Cнимок CallStack [ru.ozon.asyncInitializer.library.ComponentInitializer],
- * которые могли вызвать друг друга в момент инициализации
+ * Snapshot of the CallStack of [ru.ozon.asyncInitializer.library.ComponentInitializer],
+ * that may have called each other during initialization
  */
 internal class CycleCallSnapshot private constructor(
     private val orderedVisitedInitializers: List<InitializerCallStackFrame>,

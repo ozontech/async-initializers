@@ -31,7 +31,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `публичный неигнорируемый метод должен патчиться`() {
+    fun `public non-ignored method should be patched`() {
         val controller = ClassPatchingController.create(
             listOf(modifiedImage(TypeImage.Object("com.foo.Initializer")))
         )
@@ -40,7 +40,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `конструктор не должен патчиться`() {
+    fun `constructor should not be patched`() {
         val controller = ClassPatchingController.create(
             listOf(modifiedImage(TypeImage.Object("com.foo.Initializer")))
         )
@@ -50,7 +50,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `непубличный метод не должен патчиться`() {
+    fun `non-public method should not be patched`() {
         val controller = ClassPatchingController.create(
             listOf(modifiedImage(TypeImage.Object("com.foo.Initializer")))
         )
@@ -59,7 +59,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `метод из списка ignore не должен патчиться`() {
+    fun `method from the ignore list should not be patched`() {
         val controller = ClassPatchingController.create(
             listOf(modifiedImage(TypeImage.Object("com.foo.Initializer"), ignoredMethods = setOf(fooMethod)))
         )
@@ -68,7 +68,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `createMethodPatchController собирает только неигнорируемые инициалайзеры`() {
+    fun `createMethodPatchController collects only non-ignored initializers`() {
         val controller = ClassPatchingController.create(
             listOf(
                 modifiedImage(TypeImage.Object("com.foo.Initializer"), ignoredMethods = setOf(fooMethod)),
@@ -83,12 +83,12 @@ internal class PatchingControllerTest {
         val recording = RecordingMethodVisitor()
         methodController.injectInitializers(recording)
 
-        // в байткод встраивается только неигнорируемый инициалайзер
+        // only the non-ignored initializer is embedded into the bytecode
         assertEquals(listOf("com.foo.SecondInitializer"), recording.ldcTypes.map { it.className })
     }
 
     @Test
-    fun `program контролятор находит victim по имени класса`() {
+    fun `program controller finds the victim by class name`() {
         val controller = ProgramPatchingController.Builder()
             .addType(modifiedImage(TypeImage.Object("com.foo.Initializer")))
             .build()
@@ -97,7 +97,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `program контролятор находит victim и по суффиксу Kt`() {
+    fun `program controller finds the victim also by the Kt suffix`() {
         val controller = ProgramPatchingController.Builder()
             .addType(modifiedImage(TypeImage.Object("com.foo.Initializer")))
             .build()
@@ -106,7 +106,7 @@ internal class PatchingControllerTest {
     }
 
     @Test
-    fun `program контролятор не патчит несовпадающий класс`() {
+    fun `program controller does not patch a mismatched class`() {
         val controller = ProgramPatchingController.Builder()
             .addType(modifiedImage(TypeImage.Object("com.foo.Initializer")))
             .build()

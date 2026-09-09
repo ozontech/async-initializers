@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 
 class ThreadControllerTest {
 
-    // Текущий тестовый поток считается main
+    // The current test thread is considered main
     private fun mainController(): ThreadController {
         val platform = DefaultTestPlatformMainThread()
         return ThreadController(MainOptimizedRunner(platform))
@@ -47,7 +47,7 @@ class ThreadControllerTest {
         }
         started.await()
 
-        // Пока worker заблокирован на future.get(), "main-поток" (тестовый) исполняет action
+        // While the worker is blocked on future.get(), the "main thread" (test) runs the action
         while (finished.count > 0) {
             platform.actions.forEach { it.run() }
         }

@@ -4,8 +4,8 @@ import ru.ozon.asyncInitializer.library.emptyIterator
 import ru.ozon.asyncInitializer.library.exceptions.CycleComponentInitializerException
 
 /**
- * Уникальный CallStack [ru.ozon.asyncInitializer.library.ComponentInitializer]
- * не даст возможность держать в CallStack два одинаковых инициалайзера
+ * Unique CallStack of [ru.ozon.asyncInitializer.library.ComponentInitializer]
+ * prevents keeping two identical initializers in the CallStack
  */
 internal class UniqueInitializerCallStack private constructor(
     initializeStack: Iterator<InitializerCallStackFrame>,
@@ -29,7 +29,7 @@ internal class UniqueInitializerCallStack private constructor(
     }
 
     fun pop() {
-        stack.removeLastOrNull() ?: throw NoSuchElementException("Попытка удаления элемента из пустого стека инициалайзера")
+        stack.removeLastOrNull() ?: throw NoSuchElementException("Attempt to remove an element from an empty initializer stack")
     }
 
     fun peek(): InitializerCallStackFrame? {

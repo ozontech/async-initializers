@@ -7,8 +7,8 @@ import ru.ozon.asyncInitializers.plugin.internal.image.images.TypeImage
 import ru.ozon.asyncInitializers.plugin.internal.util.WasInjectInitializerAnnotation
 
 /**
- * ASM модификатор методов, который в данной реализации не модифицирует код,
- * а ищет аннотацию-маркер, сообщающую, что метод был модифицирован
+ * ASM method visitor that, in this implementation, does not modify code,
+ * but looks for a marker annotation indicating that the method was modified
  */
 internal class InjectInitializerValidateMethodVisitor(
     api: Int,

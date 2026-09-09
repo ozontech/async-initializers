@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 internal class ConfigReservedTypesTest {
 
     @Test
-    fun `прямое сопоставление имени с примитивом`() {
+    fun `direct name-to-primitive mapping`() {
         assertEquals(TypeImage.Primitive.INTEGER, ConfigReservedTypes.findFirstAssociated("Int"))
         assertEquals(TypeImage.Primitive.SHORT, ConfigReservedTypes.findFirstAssociated("Short"))
         assertEquals(TypeImage.Primitive.BOOLEAN, ConfigReservedTypes.findFirstAssociated("Boolean"))
@@ -21,7 +21,7 @@ internal class ConfigReservedTypesTest {
     }
 
     @Test
-    fun `обратное сопоставление примитива с именем`() {
+    fun `reverse primitive-to-name mapping`() {
         assertEquals("Int", ConfigReservedTypes.findSecondAssociated(TypeImage.Primitive.INTEGER))
         assertEquals("Short", ConfigReservedTypes.findSecondAssociated(TypeImage.Primitive.SHORT))
         assertEquals("Boolean", ConfigReservedTypes.findSecondAssociated(TypeImage.Primitive.BOOLEAN))
@@ -34,7 +34,7 @@ internal class ConfigReservedTypesTest {
     }
 
     @Test
-    fun `String сопоставляется с объектом в обе стороны`() {
+    fun `String maps to an object in both directions`() {
         assertEquals(
             TypeImage.Object("java.lang.String"),
             ConfigReservedTypes.findFirstAssociated("String")
@@ -46,12 +46,12 @@ internal class ConfigReservedTypesTest {
     }
 
     @Test
-    fun `незарезервированное имя возвращает null`() {
+    fun `unreserved name returns null`() {
         assertNull(ConfigReservedTypes.findFirstAssociated("CustomType"))
     }
 
     @Test
-    fun `незарезервированный примитив возвращает null`() {
+    fun `unreserved primitive returns null`() {
         assertNull(ConfigReservedTypes.findSecondAssociated(TypeImage.Object("java.lang.Object")))
     }
 }

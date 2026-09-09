@@ -20,7 +20,7 @@ class DynamicLazyInitializeComponentInitializerFactory(
         initializerKey: Class<T>,
     ): T {
         val foundInitializer = initializers[initializerKey.kotlin]
-            ?: error("Не найден инициалайзер")
+            ?: error("Initializer not found")
 
         @Suppress("UNCHECKED_CAST")
         return foundInitializer() as T
@@ -35,7 +35,7 @@ class LazyInitializeComponentInitializerFactory(
         initializerKey: Class<T>,
     ): T {
         val foundInitializer = initializers[initializerKey.kotlin]
-            ?: error("Не найден инициалайзер")
+            ?: error("Initializer not found")
 
         @Suppress("UNCHECKED_CAST")
         return foundInitializer() as T
@@ -51,7 +51,7 @@ class ListInitializeComponentInitializerFactory(
         initializerKey: Class<T>,
     ): T {
         val foundInitializer = initializers.find { initializer -> initializer::class.java == initializerKey }
-            ?: error("Не найден инициалайзер")
+            ?: error("Initializer not found")
 
         @Suppress("UNCHECKED_CAST")
         return foundInitializer as T

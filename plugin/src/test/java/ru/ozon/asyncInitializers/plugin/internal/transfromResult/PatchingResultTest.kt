@@ -17,7 +17,7 @@ internal class PatchingResultTest {
     private fun image(ignoredMethods: Set<MethodImage> = emptySet()) =
         ModifiedImage(victim = victim, initializer = initializer, ignoredMethods = ignoredMethods)
 
-    /** Корректно регистрируем всё, чтобы valid-трансформация прошла без исключений. */
+    /** Register everything correctly so the valid transformation runs without exceptions. */
     private fun builderWithAllFound(): PatchingResult.Builder {
         val builder = PatchingResult.Builder(listOf(image()))
         builder.addPatchedClass(victim)
@@ -26,12 +26,12 @@ internal class PatchingResultTest {
     }
 
     @Test
-    fun `валидация проходит когда все заявленные классы и инициалайзеры найдены`() {
+    fun `validation passes when all declared classes and initializers are found`() {
         builderWithAllFound().build().checkOnValidTransformation()
     }
 
     @Test
-    fun `валидация падает когда класс-victim не найден`() {
+    fun `validation fails when the victim class is not found`() {
         val builder = PatchingResult.Builder(listOf(image()))
         builder.addFoundedInitializer(initializer)
 
@@ -39,11 +39,11 @@ internal class PatchingResultTest {
             builder.build().checkOnValidTransformation()
         }
 
-        assertTrue(exception.message.orEmpty().contains("не был модифицирован"))
+        assertTrue(exception.message.orEmpty().contains("was not modified"))
     }
 
     @Test
-    fun `валидация падает когда инициалайзер не найден`() {
+    fun `validation fails when the initializer is not found`() {
         val builder = PatchingResult.Builder(listOf(image()))
         builder.addPatchedClass(victim)
 
@@ -51,27 +51,27 @@ internal class PatchingResultTest {
             builder.build().checkOnValidTransformation()
         }
 
-        assertTrue(exception.message.orEmpty().contains("Инициалайзер"))
-        assertTrue(exception.message.orEmpty().contains("не был найден"))
+        assertTrue(exception.message.orEmpty().contains("Initializer"))
+        assertTrue(exception.message.orEmpty().contains("was not found"))
     }
 
     @Test
-    fun `валидация падает когда ignore-метод не найден в классе`() {
+    fun `validation fails when an ignore-method is not found in the class`() {
         val builder = PatchingResult.Builder(listOf(image(ignoredMethods = setOf(fooMethod))))
         builder.addPatchedClass(victim)
         builder.addFoundedInitializer(initializer)
-        // ignore-метод не регистрируем через addIgnoreMethod
+        // we do not register the ignore-method via addIgnoreMethod
 
         val exception = assertFailsWith<IllegalStateException> {
             builder.build().checkOnValidTransformation()
         }
 
-        assertTrue(exception.message.orEmpty().contains("найти метод"))
+        assertTrue(exception.message.orEmpty().contains("find method"))
         assertTrue(exception.message.orEmpty().contains("foo"))
     }
 
     @Test
-    fun `isNeedValidate помечает victim как пропатченный класс и возвращает true`() {
+    fun `isNeedValidate marks the victim as patched and returns true`() {
         val builder = PatchingResult.Builder(listOf(image()))
 
         val needValidate = builder.isNeedValidate("com/foo/Victim.class")
@@ -80,7 +80,7 @@ internal class PatchingResultTest {
     }
 
     @Test
-    fun `isNeedValidate помечает инициалайзер как найденный и возвращает false`() {
+    fun `isNeedValidate marks the initializer as found and returns false`() {
         val builder = PatchingResult.Builder(listOf(image()))
 
         val needValidate = builder.isNeedValidate("com/foo/Initializer.class")
@@ -89,7 +89,7 @@ internal class PatchingResultTest {
     }
 
     @Test
-    fun `isNeedValidate не трогает посторонние классы`() {
+    fun `isNeedValidate leaves other classes untouched`() {
         val builder = PatchingResult.Builder(listOf(image()))
 
         val needValidate = builder.isNeedValidate("com/other/Some.class")

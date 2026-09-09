@@ -8,17 +8,17 @@ import org.objectweb.asm.Type
 import ru.ozon.asyncInitializers.plugin.internal.util.InitializerTypeImage
 
 /**
- * Модификтор метода встраивает [ru.ozon.asyncInitializers.plugin.internal.util.ComponentInitializer] в код
+ * Method modifier embeds [ComponentInitializer] into the code
  */
 internal class MethodPatchingController private constructor(
     private val initializerTypeImages: List<InitializerTypeImage>,
 ) {
 
     /**
-     * Встраивание следующей строки
+     * Embeds the following line
      * "(getComponentInitializer(T::class.java) as T).initialize()"
      *
-     * Где T - наш инициалайзер
+     * Where T is our initializer
      */
     fun injectInitializers(methodVisitor: MethodVisitor) = with(methodVisitor) {
         initializerTypeImages.forEach { initializer ->

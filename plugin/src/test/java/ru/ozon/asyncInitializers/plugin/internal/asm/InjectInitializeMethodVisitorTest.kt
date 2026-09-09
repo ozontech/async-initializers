@@ -13,25 +13,25 @@ internal class InjectInitializeMethodVisitorTest {
     private val initializer = TypeImage.Object("com.foo.MyInitializer")
 
     @Test
-    fun `в начале метода встраивается вызов инициалайзера`() {
+    fun `an initializer call is embedded at the start of the method`() {
         val recorder = RecordingMethodVisitor()
         val controller = MethodPatchingController.create(listOf(initializer))
         val visitor = InjectInitializeMethodVisitor(Opcodes.ASM9, recorder, controller)
 
         visitor.visitCode()
 
-        // ldc класса-инициалайзера
+        // ldc of the initializer class
         assertEquals(listOf(Type.getObjectType("com/foo/MyInitializer")), recorder.ldcTypes)
-        // CHECKCAST на инициалайзер
+        // CHECKCAST to the initializer
         assertEquals(listOf("com/foo/MyInitializer"), recorder.checkcasts)
         // getComponentInitializer(T::class.java)
         assertTrue(recorder.methodCalls.any { it.contains("getComponentInitializer") })
-        // (инициалайзер as T).initialize()
+        // (initializer as T).initialize()
         assertTrue(recorder.methodCalls.any { it.contains("initialize") && it.contains("()V") })
     }
 
     @Test
-    fun `для нескольких инициалайзеров встраивается несколько вызовов`() {
+    fun `multiple initializers embed multiple calls`() {
         val recorder = RecordingMethodVisitor()
         val controller = MethodPatchingController.create(
             listOf(initializer, TypeImage.Object("com.foo.SecondInitializer"))
@@ -49,7 +49,7 @@ internal class InjectInitializeMethodVisitorTest {
     }
 
     @Test
-    fun `без инициалайзеров байткод не модифицируется`() {
+    fun `bytecode is not modified without initializers`() {
         val recorder = RecordingMethodVisitor()
         val controller = MethodPatchingController.create(emptyList())
         val visitor = InjectInitializeMethodVisitor(Opcodes.ASM9, recorder, controller)

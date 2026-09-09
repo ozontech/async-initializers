@@ -23,7 +23,7 @@ internal class PatchingResult private constructor(
 
     private fun checkOnExitsClass(typeImage: TypeImage.Object) {
         check(modifiedMethods.contains(typeImage) || ignoreModifiedMethods.contains(typeImage)) {
-            "Класс ${typeImage} не был модифицирован, поскольку не был найден"
+            "Class ${typeImage} was not modified because it was not found"
         }
     }
 
@@ -35,9 +35,9 @@ internal class PatchingResult private constructor(
 
         notFindForIgnore.forEach { notIgnoredMethod ->
             val errorMessage = buildString {
-                append("Не смогли в классе ${victim} найти метод $notIgnoredMethod")
+                append("Could not find method $notIgnoredMethod in class ${victim}")
                 append("\n\n")
-                append("Другие найденые публичные методы в классе")
+                append("Other public methods found in the class")
                 append("\n")
                 append(modifiedMethods[victim].orEmpty().joinToString("\n"))
             }
@@ -47,7 +47,7 @@ internal class PatchingResult private constructor(
 
     private fun checkOnExitsInitializer(typeImage: TypeImage.Object) {
         check(foundInitializers.contains(typeImage)) {
-            "Инициалайзер ${typeImage} не был найден"
+            "Initializer ${typeImage} was not found"
         }
     }
 

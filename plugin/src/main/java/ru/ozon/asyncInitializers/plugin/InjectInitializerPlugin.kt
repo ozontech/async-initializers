@@ -17,10 +17,10 @@ import ru.ozon.asyncInitializers.plugin.internal.transfromResult.InjectInitializ
 import ru.ozon.asyncInitializers.plugin.internal.util.capitalizedName
 
 /**
- * Gradle plugin, инициализирующийся через fullName самим gradle
+ * Gradle plugin, initialized by Gradle itself through its full name
  *
- * Занимающийся патчингом байткода для вставки [ru.ozon.gradle.componentInitializer.util.ComponentInitializer] в код библиотек
- * Валидацией вставки данный плагин может гарантировать что [ru.ozon.gradle.componentInitializer.util.ComponentInitializer] был встроен правильно
+ * Patches bytecode to insert [ComponentInitializer] into library code
+ * By validating the insert, the plugin can guarantee that [ComponentInitializer] was embedded correctly
  */
 @Suppress("unused")
 public class InjectInitializerPlugin: Plugin<Project> {

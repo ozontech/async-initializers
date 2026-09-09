@@ -5,8 +5,8 @@ import ru.ozon.asyncInitializers.plugin.internal.asm.parcer.createMethodImage
 import ru.ozon.asyncInitializers.plugin.internal.image.images.ModifiedImage
 
 /**
- * Сущность, отвечающая за проверку метода на необходимость патчинга
- * и создание самого патчера для каждого метода отдельно
+ * Entity responsible for checking whether a method needs patching
+ * and creating a dedicated patcher for each method
  */
 internal class ClassPatchingController private constructor(
     private val modifiedImages: List<ModifiedImage>,

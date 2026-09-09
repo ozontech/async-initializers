@@ -25,9 +25,9 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 
 /**
- * Task, суть которой заключается в проверке, правильно ли произошел патчинг байт-кода
+ * Task whose purpose is to verify that bytecode patching was done correctly
  *
- * В текущей реализации берет jar всех библиотек и classes из текущего проекта
+ * In the current implementation it takes the jars of all libraries and classes from the current project
  */
 @CacheableTask
 internal abstract class InjectInitializerValidateTask : DefaultTask() {

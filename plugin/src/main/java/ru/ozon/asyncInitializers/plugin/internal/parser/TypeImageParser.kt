@@ -14,8 +14,8 @@ internal fun String.toTypeImage(): TypeImage {
 
 internal fun checkOnObject(typeImage: TypeImage): TypeImage.Object {
     check(typeImage is TypeImage.Object) {
-        "ожидался ${TypeImage::class.simpleName}:${TypeImage.Object::class.simpleName}, " +
-                "но был получен ${typeImage.javaClass.simpleName} для ${typeImage.jvmName}"
+        "expected ${TypeImage::class.simpleName}:${TypeImage.Object::class.simpleName}, " +
+                "but got ${typeImage.javaClass.simpleName} for ${typeImage.jvmName}"
     }
 
     return typeImage

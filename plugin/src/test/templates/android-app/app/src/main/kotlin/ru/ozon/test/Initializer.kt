@@ -3,12 +3,12 @@ package ru.ozon.test
 import ru.ozon.android.componentInitiazlizer.ComponentInitializer
 
 /**
- * Инициалайзер, на который ссылается inject.config.
- * Валидация ищет класс по имени из конфига.
+ * Initializer referenced by inject.config.
+ * Validation looks up the class by its name from the config.
  */
 class InitializerA : ComponentInitializer() {
 
     override fun runInitialize() {
-        // тело не важно для проверки патчинга
+        // body does not matter for patching checks
     }
 }

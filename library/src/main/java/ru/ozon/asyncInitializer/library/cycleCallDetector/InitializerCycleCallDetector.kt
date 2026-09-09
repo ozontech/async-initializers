@@ -4,10 +4,10 @@ import ru.ozon.asyncInitializer.library.ComponentInitializer
 import kotlin.concurrent.getOrSet
 
 /**
- * Детектор обнаружения циклов при вызове инициалайзеров
+ * Cycle detector for initializer invocations
  *
- * Гарантирует обнаружение цикличности (AInitializer -> BInitializer -> AInitializer)
- * в рамках одного потока
+ * Guarantees cycle detection (AInitializer -> BInitializer -> AInitializer)
+ * within a single thread
  *
  */
 internal class InitializerCycleCallDetector private constructor() {
@@ -17,10 +17,10 @@ internal class InitializerCycleCallDetector private constructor() {
         get() = initializerCallStackThreadLocal.getOrSet { UniqueInitializerCallStack.create() }
 
     /**
-     * Детект повторного вызова инициалайзеров
+     * Detects repeated invocation of initializers
      *
-     * @param componentInitializer инициалайзер, повторный вызов которого будет обнаружен
-     * при цикличной инициализации
+     * @param componentInitializer the initializer whose repeated call will be detected
+     * during cyclic initialization
      */
     fun detectOnCycle(
         componentInitializer: ComponentInitializer,
@@ -39,11 +39,11 @@ internal class InitializerCycleCallDetector private constructor() {
     }
 
     /**
-     * Создание нового стека инициализации для корректной работы детектора
+     * Creates a new initialization stack for correct detector operation
      *
-     * Полезен в ситуации смены потока, когда нужно прошлый CallStack [ComponentInitializer] перенести в другой поток
+     * Useful when switching threads to move the previous CallStack of [ComponentInitializer] to another thread
      *
-     * @param cycleCallSnapshot снимок прошлого CallStack [ComponentInitializer]
+     * @param cycleCallSnapshot the snapshot of the previous CallStack of [ComponentInitializer]
      */
     fun continueDetectFrom(
         cycleCallSnapshot: CycleCallSnapshot,
@@ -64,7 +64,7 @@ internal class InitializerCycleCallDetector private constructor() {
     }
 
     /**
-     * Создает снимок CallStack [ComponentInitializer]
+     * Creates a snapshot of the CallStack of [ComponentInitializer]
      */
     fun takeCycleCallSnapshot(): CycleCallSnapshot {
         return CycleCallSnapshot.Companion.instance(currentUniqueInitializerCallStack)

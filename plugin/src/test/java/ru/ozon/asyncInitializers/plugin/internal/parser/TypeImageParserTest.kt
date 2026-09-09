@@ -9,19 +9,19 @@ import kotlin.test.assertSame
 internal class TypeImageParserTest {
 
     @Test
-    fun `примитивы и Unit сворачиваются в примитивные типы`() {
+    fun `primitives and Unit fold into primitive types`() {
         assertEquals(TypeImage.Primitive.INTEGER, "Int".toTypeImage())
         assertEquals(TypeImage.Primitive.BOOLEAN, "Boolean".toTypeImage())
         assertEquals(TypeImage.Primitive.VOID, "Unit".toTypeImage())
     }
 
     @Test
-    fun `String сворачивается в объект`() {
+    fun `String folds into an object`() {
         assertEquals(TypeImage.Object("java.lang.String"), "String".toTypeImage())
     }
 
     @Test
-    fun `лямбда с параметрами типов распознаётся`() {
+    fun `lambda with type parameters is recognized`() {
         val image = "Lamda<com.a.A, com.b.B>".toTypeImage()
 
         assertEquals(TypeImage.Lamda(countParams = 2), image)
@@ -29,18 +29,18 @@ internal class TypeImageParserTest {
     }
 
     @Test
-    fun `полное имя класса становится объектом`() {
+    fun `fully qualified class name becomes an object`() {
         assertEquals(TypeImage.Object("com.foo.Bar"), "com.foo.Bar".toTypeImage())
     }
 
     @Test
-    fun `checkOnObject возвращает переданный объект`() {
+    fun `checkOnObject returns the passed object`() {
         val objectImage = TypeImage.Object("com.foo.Bar")
         assertSame(objectImage, checkOnObject(objectImage))
     }
 
     @Test
-    fun `checkOnObject кидает исключение на не-объекте`() {
+    fun `checkOnObject throws on a non-object`() {
         assertFailsWith<IllegalStateException> { checkOnObject(TypeImage.Primitive.INTEGER) }
     }
 }

@@ -20,7 +20,7 @@ internal class IgnoreMothodsParserTest {
         requireNotNull(parser.createImageOrNull(readerFor(line)))
 
     @Test
-    fun `парсинг метода с объектными параметрами и void`() {
+    fun `parsing a method with object parameters and void`() {
         val image = parse("ignore fun configure(ru.ozon.limb.api.LimbConfig, ru.ozon.limb.api.LimbDependencies)")
 
         assertEquals("configure", image.name)
@@ -35,14 +35,14 @@ internal class IgnoreMothodsParserTest {
     }
 
     @Test
-    fun `указанный return type сохраняется`() {
+    fun `the specified return type is preserved`() {
         val image = parse("ignore fun make(): com.foo.Bar")
 
         assertEquals(TypeImage.Object("com.foo.Bar"), image.returnType)
     }
 
     @Test
-    fun `параметр-лямбда не разбивается по запятой внутри него`() {
+    fun `lambda parameter is not split by commas inside it`() {
         val image = parse("ignore fun apply(Lamda<com.a.X, com.b.Y>)")
 
         assertEquals(1, image.orderedParameters.size)
@@ -50,7 +50,7 @@ internal class IgnoreMothodsParserTest {
     }
 
     @Test
-    fun `метод без параметров имеет пустой список параметров`() {
+    fun `method without parameters has an empty parameter list`() {
         val image = parse("ignore fun a()")
 
         assertEquals(emptyList(), image.orderedParameters)
@@ -58,7 +58,7 @@ internal class IgnoreMothodsParserTest {
     }
 
     @Test
-    fun `зарезервированные типы сворачиваются в примитивы и строку`() {
+    fun `reserved types fold into primitives and string`() {
         val image = parse("ignore fun a(Int, String, Unit)")
 
         assertEquals(
@@ -72,7 +72,7 @@ internal class IgnoreMothodsParserTest {
     }
 
     @Test
-    fun `несоответствующая строка не парсится и возвращает null`() {
-        assertNull(parser.createImageOrNull(readerFor("просто мусорная строка")))
+    fun `mismatched line is not parsed and returns null`() {
+        assertNull(parser.createImageOrNull(readerFor("just a garbage line")))
     }
 }

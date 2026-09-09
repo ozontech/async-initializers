@@ -1,7 +1,7 @@
 package ru.ozon.test
 
 /**
- * Класс-жертва. Плагин встраивает в публичные методы
+ * Victim class. The plugin embeds into public methods
  * "getComponentInitializer(InitializerA::class.java).initialize()"
  */
 object ComponentA {

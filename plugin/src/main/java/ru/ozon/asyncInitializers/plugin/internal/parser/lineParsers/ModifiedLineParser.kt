@@ -11,9 +11,9 @@ import ru.ozon.asyncInitializers.plugin.internal.util.classPath
 import ru.ozon.asyncInitializers.plugin.internal.util.findCurrentLineOrException
 
 /**
- * Парсер для строки конфига
+ * Parser for a config line
  *
- * Пример: "inject ru.ozon.hire.initializer.LimbInitializer toPublicMethods ru.ozon.limb.api.LimbAppApi {"
+ * Example: "inject ru.ozon.hire.initializer.LimbInitializer toPublicMethods ru.ozon.limb.api.LimbAppApi {"
  */
 internal class ModifiedLineParser: LineParser<ModifiedImage>() {
     private val LINE_PARSE_REGEX = Regex("^inject\\s+($classPath)\\s+to[pP]ublic[mM]ethods\\s+($classPath)\\s*(\\{)?\\s*$")
