@@ -1,0 +1,65 @@
+{
+  "name": "Mixed Graph",
+  "initializers": [
+    {
+      "name": "Network",
+      "blockingTimeMs": 200,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Storage",
+      "blockingTimeMs": 120,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Crypto",
+      "blockingTimeMs": 100,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "API Client",
+      "blockingTimeMs": 85,
+      "runOnMainThread": false,
+      "dependencies": ["Network", "Crypto"]
+    },
+    {
+      "name": "DB Manager",
+      "blockingTimeMs": 70,
+      "runOnMainThread": false,
+      "dependencies": ["Storage", "Crypto"]
+    },
+    {
+      "name": "Session",
+      "blockingTimeMs": 25,
+      "runOnMainThread": false,
+      "dependencies": ["API Client"]
+    },
+    {
+      "name": "Feature Flags",
+      "blockingTimeMs": 50,
+      "runOnMainThread": false,
+      "dependencies": ["API Client"]
+    },
+    {
+      "name": "Search Index",
+      "blockingTimeMs": 200,
+      "runOnMainThread": false,
+      "dependencies": ["DB Manager"]
+    },
+    {
+      "name": "Home Screen",
+      "blockingTimeMs": 100,
+      "runOnMainThread": true,
+      "dependencies": ["Session", "Feature Flags", "Search Index"]
+    },
+    {
+      "name": "Profile Screen",
+      "blockingTimeMs": 80,
+      "runOnMainThread": true,
+      "dependencies": ["Session", "DB Manager"]
+    }
+  ]
+}

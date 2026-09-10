@@ -1,0 +1,53 @@
+{
+  "name": "Many Leafs (parallel)",
+  "initializers": [
+    {
+      "name": "Logger",
+      "blockingTimeMs": 100,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Cache",
+      "blockingTimeMs": 200,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Config",
+      "blockingTimeMs": 150,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Tracker",
+      "blockingTimeMs": 120,
+      "runOnMainThread": false,
+      "dependencies": ["Logger", "Config"]
+    },
+    {
+      "name": "Preferences",
+      "blockingTimeMs": 90,
+      "runOnMainThread": false,
+      "dependencies": ["Cache"]
+    },
+    {
+      "name": "Experiment",
+      "blockingTimeMs": 150,
+      "runOnMainThread": false,
+      "dependencies": ["Config"]
+    },
+    {
+      "name": "AB Testing",
+      "blockingTimeMs": 80,
+      "runOnMainThread": false,
+      "dependencies": ["Experiment", "Tracker"]
+    },
+    {
+      "name": "Push Handler",
+      "blockingTimeMs": 120,
+      "runOnMainThread": true,
+      "dependencies": ["Tracker"]
+    }
+  ]
+}

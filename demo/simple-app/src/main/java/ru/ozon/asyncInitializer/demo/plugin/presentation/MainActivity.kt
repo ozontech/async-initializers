@@ -1,0 +1,238 @@
+package ru.ozon.asyncInitializer.demo.plugin.presentation
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import ru.ozon.asyncInitializer.demo.plugin.presentation.componentInitializers.ComponentKeys
+import ru.ozon.asyncInitializer.demo.plugin.presentation.theme.PluginDemoTheme
+
+private const val GRID_COLUMNS = 5
+
+private enum class InitMode { SYNC, ASYNC }
+
+class MainActivity : ComponentActivity() {
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            PluginDemoTheme {
+                GraphScreen()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GraphScreen() {
+    val state = InitializerStatus.state.collectAsState()
+
+    val isRunning by remember { derivedStateOf { state.value.wasStarted } }
+    val components by remember { derivedStateOf { state.value.initializers } }
+    val total = components.size
+    val finishedCount by remember {
+        derivedStateOf { components.values.count { it == InitializerState.FINISHED } }
+    }
+    var selectedMode by remember { mutableStateOf<InitMode?>(null) }
+    val spendTime by remember { derivedStateOf { state.value.spendTime } }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { TopAppBar(title = { Text("Async Component Initializers") }) },
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Button(
+                    onClick = {
+                        selectedMode = InitMode.SYNC
+                        GraphInitializerRunner.runSync()
+                    },
+                    enabled = !isRunning && selectedMode == null,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        if (selectedMode == InitMode.SYNC) "Sync ✓" else "Sync"
+                    )
+                }
+                Button(
+                    onClick = {
+                        selectedMode = InitMode.ASYNC
+                        GraphInitializerRunner.runAsync()
+                    },
+                    enabled = !isRunning && selectedMode == null,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        if (selectedMode == InitMode.ASYNC) "Async ✓" else "Async"
+                    )
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center,
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Initialized $finishedCount/$total",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                    LinearProgressIndicator(
+                        progress = { if (total == 0) 0f else finishedCount.toFloat() / total },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                    InitializerGrid(items = ComponentKeys.entries, statuses = components)
+                    Legend()
+                }
+            }
+
+            AnimatedVisibility(
+                visible = spendTime != null,
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut(),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = "Completed in $spendTime ms",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(16.dp),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Legend() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+    ) {
+        LegendItem(Color(0xFF9E9E9E), "Idle")
+        LegendItem(Color(0xFFF9A825), "Waiting")
+        LegendItem(Color(0xFFF57C00), "Running")
+        LegendItem(Color(0xFF2E7D32), "Finished")
+    }
+}
+
+@Composable
+private fun LegendItem(color: Color, label: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .background(color, RoundedCornerShape(3.dp)),
+        )
+        Spacer(Modifier.width(4.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+        )
+    }
+}
+
+@Composable
+private fun InitializerGrid(
+    items: List<ComponentKeys>,
+    statuses: Map<ComponentKeys, InitializerState>,
+) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        items.chunked(GRID_COLUMNS).forEach { rowItems ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                rowItems.forEach { item ->
+                    val state = statuses[item] ?: InitializerState.IDLE
+                    val (borderColor, borderWidth) = when (state) {
+                        InitializerState.IDLE -> Color(0xFF9E9E9E) to 1.dp
+                        InitializerState.WAITING -> Color(0xFFF9A825) to 1.dp
+                        InitializerState.RUNNING -> Color(0xFFF57C00) to 3.dp
+                        InitializerState.FINISHED -> Color(0xFF2E7D32) to 2.dp
+                    }
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(88.dp)
+                            .border(borderWidth, borderColor, RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp)),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = item.displayName,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Center,
+                            color = borderColor,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

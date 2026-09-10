@@ -1,0 +1,27 @@
+package ru.ozon.asyncInitializers.plugin
+
+import org.gradle.api.file.RegularFile
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import javax.inject.Inject
+
+public abstract class InjectInitializerContainer @Inject constructor(
+    public val name: String,
+    objects: ObjectFactory
+) {
+
+    /**
+     * File containing a list of commands for the plugin used to perform patching
+     */
+    public val configs: ListProperty<RegularFile> = objects.listProperty(RegularFile::class.java)
+
+    /**
+     * Verification after patching that all declared classes were found and patched
+     *
+     * In the current implementation this is a slow procedure
+     */
+    public val isTransformResultEnabled: Property<Boolean> = objects.property(Boolean::class.java)
+        .convention(false)
+
+}
