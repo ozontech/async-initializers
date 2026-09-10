@@ -3,61 +3,61 @@
   "initializers": [
     {
       "name": "Network",
-      "blockingTimeMs": 1000,
+      "blockingTimeMs": 200,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Storage",
-      "blockingTimeMs": 600,
+      "blockingTimeMs": 120,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Crypto",
-      "blockingTimeMs": 400,
+      "blockingTimeMs": 100,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "API Client",
-      "blockingTimeMs": 500,
+      "blockingTimeMs": 85,
       "runOnMainThread": false,
       "dependencies": ["Network", "Crypto"]
     },
     {
       "name": "DB Manager",
-      "blockingTimeMs": 700,
+      "blockingTimeMs": 70,
       "runOnMainThread": false,
       "dependencies": ["Storage", "Crypto"]
     },
     {
       "name": "Session",
-      "blockingTimeMs": 200,
+      "blockingTimeMs": 25,
       "runOnMainThread": false,
       "dependencies": ["API Client"]
     },
     {
       "name": "Feature Flags",
-      "blockingTimeMs": 150,
+      "blockingTimeMs": 50,
       "runOnMainThread": false,
       "dependencies": ["API Client"]
     },
     {
       "name": "Search Index",
-      "blockingTimeMs": 1200,
+      "blockingTimeMs": 200,
       "runOnMainThread": false,
       "dependencies": ["DB Manager"]
     },
     {
       "name": "Home Screen",
-      "blockingTimeMs": 350,
+      "blockingTimeMs": 100,
       "runOnMainThread": true,
       "dependencies": ["Session", "Feature Flags", "Search Index"]
     },
     {
       "name": "Profile Screen",
-      "blockingTimeMs": 400,
+      "blockingTimeMs": 80,
       "runOnMainThread": true,
       "dependencies": ["Session", "DB Manager"]
     }

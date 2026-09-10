@@ -21,31 +21,31 @@
     },
     {
       "name": "Tracker",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 120,
       "runOnMainThread": false,
       "dependencies": ["Logger", "Config"]
     },
     {
       "name": "Preferences",
-      "blockingTimeMs": 180,
+      "blockingTimeMs": 90,
       "runOnMainThread": false,
       "dependencies": ["Cache"]
     },
     {
       "name": "Experiment",
-      "blockingTimeMs": 250,
+      "blockingTimeMs": 150,
       "runOnMainThread": false,
       "dependencies": ["Config"]
     },
     {
       "name": "AB Testing",
-      "blockingTimeMs": 100,
+      "blockingTimeMs": 80,
       "runOnMainThread": false,
       "dependencies": ["Experiment", "Tracker"]
     },
     {
       "name": "Push Handler",
-      "blockingTimeMs": 220,
+      "blockingTimeMs": 120,
       "runOnMainThread": true,
       "dependencies": ["Tracker"]
     }
