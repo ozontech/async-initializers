@@ -1,23 +1,25 @@
 # AsyncInitializers
 
-## 📋 Содержание
-- [ℹ️ Описание](#ℹ-описание)
-- [🔌️ Подключение](#-подключение)
-- [🛠️ Настройка и инициализация](#-настройка-и-инициализация)
-- [🚀 Использование](#-использование)
-- [📞 Контакты](#-контакты)
+**English** | [Русский](../library/README.ru.md)
 
-## ℹ️ Описание
+## 📋 Table of contents
+- [ℹ️ Description](#-description)
+- [🔌️ Setup](#-setup)
+- [🛠️ Configuration and initialization](#-configuration-and-initialization)
+- [🚀 Usage](#-usage)
 
-`AsyncInitializer` — библиотека для безопасной и потокобезопасной инициализации компонентов приложения. Предоставляет фреймворк для управления зависимостями при инициализации с гарантиями:
+## ℹ️ Description
 
-- **Thread-safe инициализация** — двойная проверка блокировки (Double-Check Locking) гарантирует однократный вызов инициализации компонента независимо от количества потоков
-- **Детектирование циклических зависимостей** — автоматическое обнаружение циклов вида A → B → A на основе thread-local стека вызовов
-- **Поддержка MainThread** — возможность принудительного выполнения инициализации на главном потоке с автоматическим переключением из любого потока
-- **Защита от дедлоков** — оптимизированная синхронизация для MainThread, предотвращающая взаимную блокировку потоков
+`AsyncInitializer` — a library for safe and thread-safe initialization of application components. It provides a framework for managing dependencies during initialization with the following guarantees:
 
-Библиотека рассчитана на использование в крупных многомодульных Android-приложениях, где компоненты инициализируются по требованию (lazy initialization) и могут иметь сложный граф зависимостей.
-## 🔌️ Подключение
+- **Thread-safe initialization** — Double-Check Locking guarantees that a component's initialization is invoked exactly once regardless of the number of threads
+- **Cyclic dependency detection** — automatic detection of cycles like A → B → A based on a thread-local call stack
+- **MainThread support** — the ability to force initialization to run on the main thread with automatic switching from any thread
+- **Deadlock protection** — optimized synchronization for MainThread that prevents threads from blocking each other
+
+The library is designed for large multi-module Android applications where components are initialized on demand (lazy initialization) and may have a complex dependency graph.
+
+## 🔌️ Setup
 
 ##### libs.toml
 ```toml
@@ -34,7 +36,7 @@ dependencies {
 }
 ```
 
-Либо напрямую, без каталога версий:
+Or directly, without the version catalog:
 
 ```kts
 dependencies {
@@ -42,12 +44,12 @@ dependencies {
 }
 ```
 
-## 🛠️ Настройка и инициализация
+## 🛠️ Configuration and initialization
 
-Перед использованием необходимо однократно настроить `AppComponentInitializerProvider` в точке входа приложения:
+Before use, you need to configure `AppComponentInitializerProvider` once at the application entry point:
 
 ```kotlin
-// Создаём фабрику компонентов (реализует AppComponentInitializerFactory)
+// We create a components factory (implements AppComponentInitializerFactory)
 class MyComponentsFactory : AppComponentInitializerFactory {
     override fun <T : ComponentInitializer> create(initializer: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
@@ -60,13 +62,13 @@ class MyComponentsFactory : AppComponentInitializerFactory {
     }
 }
 
-// Настраиваем провайдер (вызывается один раз при старте приложения)
+// We configure the provider (called once at application startup)
 setupAppComponentInitializer(
     factory = MyComponentsFactory(),
 )
 ```
 
-По умолчанию используется `DefaultComponentInitializerStore` (in-memory кэш) и `DefaultPlatformMainThread` (на основе `Handler(Looper.getMainLooper())`). При необходимости их можно переопределить:
+By default, the `DefaultComponentInitializerStore` (an in-memory cache) and the `DefaultPlatformMainThread` (based on `Handler(Looper.getMainLooper())`) are used. If needed, they can be overridden:
 
 ```kotlin
 setupAppComponentInitializer(
@@ -76,68 +78,68 @@ setupAppComponentInitializer(
 )
 ```
 
-## 🚀 Использование
+## 🚀 Usage
 
-### Создание инициализатора компонента
+### Creating a component initializer
 
 ```kotlin
 class AnalyticsInitializer : ComponentInitializer() {
 
     override fun runInitialize() {
-        // Тяжёлая инициализация компонента
+        // Heavy component initialization
     }
 }
 ```
 
-### Выполнение на MainThread
+### Running on the MainThread
 
 ```kotlin
 class UiComponentsInitializer : ComponentInitializer(runOnlyOnMainThread = true) {
 
     override fun runInitialize() {
-        // Выполняется на MainThread
+        // Runs on the MainThread
     }
 }
 ```
 
-### Управление зависимостями
+### Managing dependencies
 
-Зависимости разрешаются вручную внутри `runInitialize()` через `getComponentInitializer<T>()`:
+Dependencies are resolved manually inside `runInitialize()` via `getComponentInitializer<T>()`:
 
 ```kotlin
 class AnalyticsInitializer : ComponentInitializer() {
 
     override fun runInitialize() {
-        // Явное разрешение зависимостей
+        // Explicit dependency resolution
         getComponentInitializer<DatabaseInitializer>().initialize()
         getComponentInitializer<NetworkInitializer>().initialize()
     }
 }
 ```
 
-### Запуск инициализации и получение компонента
+### Running initialization and getting a component
 
 ```kotlin
-// Получение инициализатора по типу (reified)
+// Getting the initializer by type (reified)
 val analyticsInitializer = getComponentInitializer<AnalyticsInitializer>()
 
-// Запуск инициализации (с гарантией однократного вызова)
+// Running initialization (with a single-invocation guarantee)
 analyticsInitializer.initialize()
 ```
 
-При первом обращении к `getComponentInitializer` фабрика создаёт экземпляр, который кэшируется в `ComponentInitializerStore`. При повторном запросе возвращается закэшированный экземпляр.
+On the first call to `getComponentInitializer` the factory creates an instance, which is cached in the `ComponentInitializerStore`. On subsequent requests the cached instance is returned.
 
-### Расширение возможностей при использовании component-initializer
+### Extending capabilities with the component-injector plugin
 
-Component-initializer имеет дополнительное решение для вставки вызовов вида
+Component-initializer provides an additional solution for inserting calls of the form
 
 ```kotlin
 getComponentInitializer<NetworkInitializer>().initialize()
 ```
 
-в места, которые не подконтрольны разработчику (например, внутри библиотек).
+into places that are not under developer control (for example, inside libraries).
 
-Для ознакомления и подключения используйте специальный плагин [asyncInitializer-injector](../plugin/README.md).
+To learn more and set it up, use the dedicated plugin [asyncInitializer-injector](../plugin/README.md).
 
-## Лицензия
-Библиотека AsyncInitializers распространяется по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находится в свободном доступе на GitHub.
+## License
+The AsyncInitializers library is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html) and is freely available on GitHub.

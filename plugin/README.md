@@ -1,26 +1,29 @@
 # AsyncInitializers Injector Plugin
 
-Плагин для патчинга байткода Android-приложений: автоматически встраивает вызов
-инициалайзера (`ComponentInitializer`) в публичные методы указанных классов напрямую
-на этапе сборки, без ручных вызовов в коде.
+**English** | [Русский](../plugin/README.ru.md)
 
-## ℹ️ Описание
+A plugin for bytecode patching of Android applications: it automatically inlines a call
+to the initializer (`ComponentInitializer`) into the public methods of the specified classes
+directly at build time, without manual calls in the code.
 
-В приложениях часто требуется в точке входа в фичу быть уверенным, что компонент уже
-инициализирован. Плагин внедряет вызов `getComponentInitializer(T::class.java).initialize()`
-в публичные методы классов-жертв на этапе сборки, не требуя изменений в исходном коде.
+## ℹ️ Description
 
-Плюсы:
+In applications it is often required that a component is already initialized at the entry point
+of a feature. The plugin injects a call to `getComponentInitializer(T::class.java).initialize()`
+into the public methods of the target classes at build time, without requiring any changes
+to the source code.
 
-- инициализация компонентов без изменения исходного кода;
-- инжект инициалайзеров в библиотеки, к которым нет доступа;
-- вызовы не размазаны по кодовой базе — всё описывается одним конфиг-файлом.
+Benefits:
 
-Пример. 
-До применения плагина:
+- initialization of components without modifying source code;
+- injection of initializers into libraries to which you have no access;
+- calls are not scattered across the codebase — everything is described in a single config file.
+
+Example.
+Before applying the plugin:
 
 ```kotlin
-// Исходный код класса-жертвы
+// Target class source code
 object ComponentA {
     fun initialize(message: String) {
         this.message = message
@@ -28,18 +31,18 @@ object ComponentA {
 }
 ```
 
-превращается в:
+becomes:
 
 ```kotlin
 object ComponentA {
     fun initialize(message: String) {
-        getComponentInitializer(InitializerA::class.java).initialize() // встроено плагином
+        getComponentInitializer(InitializerA::class.java).initialize() // injected by the plugin
         this.message = message
     }
 }
 ```
 
-## 📦 Подключение
+## 📦 Setup
 
 ```toml
 # gradle/libs.versions.toml
@@ -51,90 +54,90 @@ asyncInitializerInjector = { id = "ru.ozon.asyncInitializer-injector", version.r
 ```
 
 ```kotlin
-// Корневой build.gradle.kts
+// Root build.gradle.kts
 plugins {
     alias(libs.plugins.asyncInitializerInjector) apply false
 }
 ```
 
 ```kotlin
-// build.gradle.kts в application-модуле (плагин работает только с com.android.application)
+// build.gradle.kts in the application module (the plugin works only with com.android.application)
 plugins {
     id("com.android.application")
     alias(libs.plugins.asyncInitializerInjector)
 }
 ```
 
-## 📚 Рантайм-библиотека
+## 📚 Runtime library
 
-Плагин является **дополнением** к рантайм-библиотеке. И работает только с классами-инициалайзерами, которые наследуются
-от базового класса `ComponentInitializer` из рантайм-библиотеки
+The plugin is an **add-on** to the runtime library. It works only with initializer classes that inherit
+from the base class `ComponentInitializer` from the runtime library
 `ru.ozon:asyncInitializers`.
 
-Подключение и использование рантайм-библиотеки: [library/README.md](../library/README.md).
+Setup and usage of the runtime library: [library/README.md](../library/README.md).
 
-> Инициалайзер обязательно должен наследоваться от базового класса `ComponentInitializer`.
+> The initializer must inherit from the base class `ComponentInitializer`.
 
 ```kotlin
 import ru.ozon.asyncInitializer.library.ComponentInitializer
 
 class InitializerA : ComponentInitializer() {
     override fun runInitialize() {
-        // Логика инициализации
+        // Initialization logic
     }
 }
 ```
 
-## 🛠️ Настройка
+## 🛠️ Configuration
 
-Плагин использует контейнер `injectInitializerComponents`, в котором для каждого
-buildType (`debug`, `release` и т.д.) объявляется своя конфигурация.
+The plugin uses the `injectInitializerComponents` container, in which a separate configuration
+is declared for each buildType (`debug`, `release`, etc.).
 
-> Плагин применяется к варианту, только если имя контейнера совпадает с `buildType`
-> варианта (конфигурация по продукт-флейворам не разделяется).
+> The plugin is applied to a variant only if the container name matches the variant's `buildType`
+> (configuration is not split by product flavors).
 
 ```kotlin
-// build.gradle.kts в application-модуле
+// build.gradle.kts in the application module
 injectInitializerComponents {
     create("debug") {
-        // Файлы с описанием, какие инициалайзеры встроить в какие классы
+        // Files describing which initializers to inject into which classes
         configs = listOf(layout.projectDirectory.file("initializer.config"))
 
-        // Проверять после патчинга, что все заявленные классы найдены и пропатчены.
-        // В текущей реализации — долгая процедура (по умолчанию false)
+        // Verify after patching that all declared classes were found and patched.
+        // In the current implementation this is a slow procedure (false by default)
         isTransformResultEnabled = true
     }
 }
 ```
 
-### Формат конфиг-файла
+### Config file format
 
-Формат конфига пара «инициалайзер → класс-жертва»:
+The config format is an initializer → target-class pair:
 
 ```
-inject <InitializerClass> toPublicMethods <VictimClass> {
+inject <InitializerClass> toPublicMethods <TargetClass> {
     ignore fun <methodName>(<parameters>): <returnType>?
 }
 ```
 
-Элементы директивы `inject`:
+Elements of the `inject` directive:
 
-- `inject` — полное имя класса-инициалайзера (наследник `ComponentInitializer` из рантайм-библиотеки).
-- `toPublicMethods` — полное имя класса-жертвы, в публичные методы которого встраивается вызов.
-- Внутри блока `{}` перечисляются `ignore`-методы, которые патчить **не** нужно. (Можно оставлять пустым)
+- `inject` — the fully qualified name of the initializer class (a subclass of `ComponentInitializer` from the runtime library).
+- `toPublicMethods` — the fully qualified name of the target class, into whose public methods the call is injected.
+- Inside the `{}` block the `ignore` methods that **must not** be patched are listed. (It can be left empty.)
 
-Директива `ignore` сопоставляется с методом класса-жертвы **по полной сигнатуре** — имя,
-параметры и возвращаемый тип, поэтому сигнатуру нужно указывать точно так же, как в коде:
+The `ignore` directive is matched against a method of the target class **by its full signature** — name,
+parameters, and return type — so the signature must be specified exactly as it appears in the code:
 
-- `methodName` — имя метода;
-- `parameters` — типы параметров через запятую (можно оставить пустым, если параметров нет);
-- `: returnType` — возвращаемый тип (можно опустить, если метод возвращает `Unit`).
+- `methodName` — the method name;
+- `parameters` — parameter types separated by commas (can be left empty if there are no parameters);
+- `: returnType` — the return type (can be omitted if the method returns `Unit`).
 
-#### Примитивные типы
+#### Primitive types
 
-Для примитивов, Unit, String используются зарезервированные имена: `Int`, `Long`, `Short`, `Byte`,
-`Boolean`, `Char`, `Float`, `Double`, `Unit`. `String` также
-зарезервирован и соответствует `java.lang.String`.
+Reserved names are used for primitives, `Unit`, and `String`: `Int`, `Long`, `Short`, `Byte`,
+`Boolean`, `Char`, `Float`, `Double`, `Unit`. `String` is also
+reserved and corresponds to `java.lang.String`.
 
 ```text
 inject ru.ozon.example.InitializerA toPublicMethods ru.ozon.example.ComponentA {
@@ -145,10 +148,10 @@ inject ru.ozon.example.InitializerA toPublicMethods ru.ozon.example.ComponentA {
 }
 ```
 
-#### Типы-объекты
+#### Object types
 
-Для остальных типов указывается полное имя класса (ваш класс или класс библиотеки) —
-как в параметрах, так и в возвращаемом типе.
+For all other types, the fully qualified class name is specified (your class or a library class) —
+both in the parameters and in the return type.
 
 ```text
 inject ru.ozon.example.InitializerB toPublicMethods ru.ozon.example.ComponentB {
@@ -158,9 +161,9 @@ inject ru.ozon.example.InitializerB toPublicMethods ru.ozon.example.ComponentB {
 }
 ```
 
-#### Смешанные типы
+#### Mixed types
 
-Параметры разных типов свободно комбинируются. Полный корректный пример конфиг-файла:
+Parameters of different types can be combined freely. A complete valid example of a config file:
 
 ```text
 inject ru.ozon.example.componentInitializers.InitializerA toPublicMethods ru.ozon.example.componentInitializers.ComponentA { }
@@ -172,9 +175,9 @@ inject ru.ozon.example.componentInitializers.InitializerC toPublicMethods ru.ozo
 }
 ```
 
-> **Важно:** сигнатура `ignore`-метода должна совпасть с реальной сигнатурой метода
-> в классе-жертве, иначе сборка упадёт на этапе валидации.
+> **Important:** the `ignore` method signature must match the real signature of the method
+> in the target class, otherwise the build will fail at the validation stage.
 
-#### Лицензия
+#### License
 
-AsyncInitializers Injector Plugin распространяется по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находится в свободном доступе на GitHub. Дистрибутив AsyncInitializers Injector Plugin включает в себя библиотеку ASM, выпущенную под [лицензией 3-Clause BSD](https://asm.ow2.io/license.html).
+The AsyncInitializers Injector Plugin is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html) and is freely available on GitHub. The AsyncInitializers Injector Plugin distribution includes the ASM library, released under the [3-Clause BSD License](https://asm.ow2.io/license.html).

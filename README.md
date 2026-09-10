@@ -1,20 +1,22 @@
 # AsyncInitializers
 
-Репозиторий с решениями для безопасной и ускоренной инициализации зависимостей в Android-приложениях:
-рантайм-библиотека с фреймворком инициализации и Gradle-плагин для её бесшовной интеграции.
+**English** | [Русский](README.ru.md)
 
-## 📦 Компоненты
+A repository with solutions for safe and accelerated initialization of dependencies in Android applications:
+a runtime library with an initialization framework and a Gradle plugin for its seamless integration.
 
-| Компонент | Назначение |
+## 📦 Components
+
+| Component | Purpose |
 | --- | --- |
-| [`library/`](library/README.md) | Рантайм-библиотека `AsyncInitializer` — потокобезопасная инициализация компонентов, детектирование циклических зависимостей, поддержка MainThread и защита от дедлоков. |
-| [`plugin/`](plugin/README.md) | Gradle-плагин `Component Initializer Injector` — патчинг байткода: автоматически встраивает вызовы инициалайзеров в публичные методы классов на этапе сборки. |
+| [`library/`](library/README.md) | `AsyncInitializer` runtime library — thread-safe component initialization, cyclic dependency detection, MainThread support, and deadlock protection. |
+| [`plugin/`](plugin/README.md) | `Component Initializer Injector` Gradle plugin — bytecode patching: automatically inlines initializer calls into public methods of classes at build time. |
 
-## 🔗 Документация
+## 🔗 Documentation
 
-- [📚 Рантайм-библиотека `library/README.md`](library/README.md)
-- [💉 Gradle-плагин `plugin/README.md`](plugin/README.md)
+- [📚 Runtime library `library/README.md`](library/README.md)
+- [💉 Gradle plugin `plugin/README.md`](plugin/README.md)
 
-## Лицензия
+## License
 
-Библиотека AsyncInitializers и плагин AsyncInitializers Injector Plugin распространяются по лицензии [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html) и находятся в свободном доступе на GitHub. Дистрибутив AsyncInitializers Injector Plugin включает в себя библиотеку ASM, выпущенную под [лицензией 3-Clause BSD](https://asm.ow2.io/license.html).
+The AsyncInitializers library and the AsyncInitializers Injector Plugin are distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html) and are freely available on GitHub. The AsyncInitializers Injector Plugin distribution includes the ASM library, released under the [3-Clause BSD License](https://asm.ow2.io/license.html).
