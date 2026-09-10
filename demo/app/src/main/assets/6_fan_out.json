@@ -3,37 +3,37 @@
   "initializers": [
     {
       "name": "Database",
-      "blockingTimeMs": 1500,
+      "blockingTimeMs": 500,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Repository A",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 100,
       "runOnMainThread": false,
       "dependencies": ["Database"]
     },
     {
       "name": "Repository B",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 100,
       "runOnMainThread": false,
       "dependencies": ["Database"]
     },
     {
       "name": "Repository C",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 100,
       "runOnMainThread": false,
       "dependencies": ["Database"]
     },
     {
       "name": "Repository D",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 80,
       "runOnMainThread": false,
       "dependencies": ["Database"]
     },
     {
       "name": "Repository E",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 80,
       "runOnMainThread": false,
       "dependencies": ["Database"]
     }

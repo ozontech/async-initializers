@@ -3,31 +3,31 @@
   "initializers": [
     {
       "name": "UI Core",
-      "blockingTimeMs": 200,
+      "blockingTimeMs": 100,
       "runOnMainThread": true,
       "dependencies": []
     },
     {
       "name": "UI Navigation",
-      "blockingTimeMs": 400,
+      "blockingTimeMs": 200,
       "runOnMainThread": true,
       "dependencies": ["UI Core"]
     },
     {
       "name": "UI Theme",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 150,
       "runOnMainThread": true,
       "dependencies": ["UI Core"]
     },
     {
       "name": "UI Animations",
-      "blockingTimeMs": 500,
+      "blockingTimeMs": 250,
       "runOnMainThread": true,
       "dependencies": ["UI Theme"]
     },
     {
       "name": "Background Sync",
-      "blockingTimeMs": 800,
+      "blockingTimeMs": 250,
       "runOnMainThread": false,
       "dependencies": []
     }

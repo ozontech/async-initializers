@@ -3,31 +3,31 @@
   "initializers": [
     {
       "name": "Auth",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 200,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "User Profile",
-      "blockingTimeMs": 400,
+      "blockingTimeMs": 100,
       "runOnMainThread": false,
       "dependencies": ["Auth"]
     },
     {
       "name": "Dashboard",
-      "blockingTimeMs": 500,
+      "blockingTimeMs": 250,
       "runOnMainThread": true,
       "dependencies": ["User Profile"]
     },
     {
       "name": "Notifications",
-      "blockingTimeMs": 350,
+      "blockingTimeMs": 150,
       "runOnMainThread": false,
       "dependencies": ["Dashboard"]
     },
     {
       "name": "Push Service",
-      "blockingTimeMs": 250,
+      "blockingTimeMs": 150,
       "runOnMainThread": false,
       "dependencies": ["Notifications"]
     }

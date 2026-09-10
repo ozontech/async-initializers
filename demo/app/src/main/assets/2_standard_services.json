@@ -3,55 +3,55 @@
   "initializers": [
     {
       "name": "Analytics",
-      "blockingTimeMs": 500,
+      "blockingTimeMs": 50,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Database",
-      "blockingTimeMs": 1200,
+      "blockingTimeMs": 120,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Network Client",
-      "blockingTimeMs": 800,
+      "blockingTimeMs": 80,
       "runOnMainThread": false,
       "dependencies": []
     },
     {
       "name": "Crash Reporter",
-      "blockingTimeMs": 300,
+      "blockingTimeMs": 120,
       "runOnMainThread": true,
       "dependencies": []
     },
     {
       "name": "User Session",
-      "blockingTimeMs": 600,
+      "blockingTimeMs": 60,
       "runOnMainThread": false,
       "dependencies": ["Database", "Network Client"]
     },
     {
       "name": "Feature Toggles",
-      "blockingTimeMs": 400,
+      "blockingTimeMs": 200,
       "runOnMainThread": false,
       "dependencies": ["Network Client"]
     },
     {
       "name": "UI Theme",
-      "blockingTimeMs": 200,
+      "blockingTimeMs": 100,
       "runOnMainThread": true,
       "dependencies": ["User Session"]
     },
     {
       "name": "Location Provider",
-      "blockingTimeMs": 700,
+      "blockingTimeMs": 70,
       "runOnMainThread": false,
       "dependencies": ["Network Client"]
     },
     {
       "name": "Image Loader",
-      "blockingTimeMs": 900,
+      "blockingTimeMs": 90,
       "runOnMainThread": false,
       "dependencies": ["Network Client", "User Session"]
     }
