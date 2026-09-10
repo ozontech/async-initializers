@@ -1,0 +1,35 @@
+{
+  "name": "Chain (5 deep)",
+  "initializers": [
+    {
+      "name": "Auth",
+      "blockingTimeMs": 200,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "User Profile",
+      "blockingTimeMs": 100,
+      "runOnMainThread": false,
+      "dependencies": ["Auth"]
+    },
+    {
+      "name": "Dashboard",
+      "blockingTimeMs": 250,
+      "runOnMainThread": true,
+      "dependencies": ["User Profile"]
+    },
+    {
+      "name": "Notifications",
+      "blockingTimeMs": 150,
+      "runOnMainThread": false,
+      "dependencies": ["Dashboard"]
+    },
+    {
+      "name": "Push Service",
+      "blockingTimeMs": 150,
+      "runOnMainThread": false,
+      "dependencies": ["Notifications"]
+    }
+  ]
+}

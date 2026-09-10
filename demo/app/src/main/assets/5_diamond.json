@@ -1,0 +1,29 @@
+{
+  "name": "Diamond",
+  "initializers": [
+    {
+      "name": "Core",
+      "blockingTimeMs": 200,
+      "runOnMainThread": false,
+      "dependencies": []
+    },
+    {
+      "name": "Left Branch",
+      "blockingTimeMs": 150,
+      "runOnMainThread": false,
+      "dependencies": ["Core"]
+    },
+    {
+      "name": "Right Branch",
+      "blockingTimeMs": 100,
+      "runOnMainThread": false,
+      "dependencies": ["Core"]
+    },
+    {
+      "name": "Merger",
+      "blockingTimeMs": 50,
+      "runOnMainThread": true,
+      "dependencies": ["Left Branch", "Right Branch"]
+    }
+  ]
+}
