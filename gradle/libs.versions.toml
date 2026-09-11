@@ -1,5 +1,6 @@
 [versions]
 agp = "9.2.1"
+kotlinxCollectionsImmutable = "0.5.2"
 vanniktech-publish = "0.37.0"
 gradle-publish = "1.2.1"
 minSdk = "24"
@@ -46,6 +47,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "android-lifecycle" }
 appCompatDemo = { module = "androidx.appcompat:appcompat", version.ref = "appCompatDemo" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }

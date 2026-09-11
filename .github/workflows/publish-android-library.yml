@@ -58,4 +58,4 @@ jobs:
           generate_release_notes: true
           files: |
             library/build/outputs/aar/library-release.aar
-            demo/app/build/outputs/apk/release/app-release-unsigned.apk
+            demo/interactive-app/build/outputs/apk/release/app-release-unsigned.apk
